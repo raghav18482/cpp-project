@@ -9,8 +9,11 @@
 #include<sstream>
 #include<string>
 using namespace std;
-string makeFolder(string firstName, string lastName, string action){
-        string foldername="data/"+action+"/"+firstName+lastName;
+string makeFolder(string firstName, string lastName, string action,int count){
+        ostringstream str1;
+        str1<<count;
+        string id=str1.str();
+        string foldername="data/"+action+"/"+id+"_"+firstName+lastName;
         mkdir(foldername.c_str());
         return foldername;
 }

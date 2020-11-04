@@ -21,3 +21,11 @@
 > above command will make your folder latest like on the github
 
 then do your work and again push it on github like above mentioned
+
+
+# the project structure and detail
+-> data folder contains the storing of all the records
+-> design.cpp contains the designs we will display
+-> storing.cpp will do all the storing related operations
+-> main.cpp is the main driver file
+-> in data folder the records are stored in the form of id_firstnameSecondName

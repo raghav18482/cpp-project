@@ -30,9 +30,9 @@ class Donate:public Customer{
         Donate(){
             cout<<"Enter the money you wanna donate ";
             cin>>money;
-            string folderName=makeFolder(firstName,lastName,"donate");
-            storeData(age,money,gender,folderName);
             count=getCount("donate");
+            string folderName=makeFolder(firstName,lastName,"donate",count);
+            storeData(age,money,gender,folderName);
             updateCount("donate",count+1);
         }
 };
