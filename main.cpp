@@ -25,11 +25,15 @@ class Customer{
 class Donate:public Customer{
     protected:
         int money;
+        int count;
     public:
         Donate(){
             cout<<"Enter the money you wanna donate ";
             cin>>money;
-            makeFolder(firstName,lastName,"donate");
+            string folderName=makeFolder(firstName,lastName,"donate");
+            storeData(age,money,gender,folderName);
+            count=getCount("donate");
+            updateCount("donate",count+1);
         }
 };
 class Report:public Customer{
