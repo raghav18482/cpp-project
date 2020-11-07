@@ -53,7 +53,6 @@ int getCount(string action){
 
 void updateCount(string action, int count){
         string foldername="data/"+action+"/"+"count.txt";
-        // string counting=to_string(count);
         ofstream out;
         out.open(foldername.c_str());
         out<<count;

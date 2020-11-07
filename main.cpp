@@ -2,30 +2,11 @@
 #include<cstdio>
 #include<fstream>
 #include "storing.cpp"
+#include "extract.cpp"
 using namespace std;
-
-class Customer{
-    protected:
-        string firstName;
-        string lastName;
-        int age;
-        char gender;
-    public:
-        Customer(){
-            cout<<"Enter your first Name: ";
-            cin>>firstName;
-            cout<<"Enter the last Name: ";
-            cin>>lastName;
-            cout<<"Age??";
-            cin>>age;
-            cout<<"Gender(m/f): ";
-            cin>>gender;
-        }
-};
 class Donate:public Customer{
     protected:
         int money;
-        int count;
     public:
         Donate(){
             cout<<"Enter the money you wanna donate ";
@@ -35,12 +16,31 @@ class Donate:public Customer{
             storeData(age,money,gender,folderName);
             updateCount("donate",count+1);
         }
+        Donate(int id):Customer(id){
+            money=getData(this);
+            cout<<money;
+            cout<<firstName<<lastName<<age<<count<<gender;
+        }
+        
 };
 class Report:public Customer{
 
 };
 int main(){
     cout<<"Welcome to a pet NGO ";
-    Donate d;
+    int choice;
+    cout<<"please ente the choice \n";
+    cout<<"1. donate\n";
+    cout<<"2. recieve\n";
+    cin>>choice;
+    if(choice==1){
+        Donate d;
+    }
+    else{
+        int id;
+        cout<<"enter your id \n";
+        cin>>id;
+        Donate d(id);
+    }
     return 0;
 }
