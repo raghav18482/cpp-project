@@ -1,9 +1,6 @@
 #include<iostream>
-#include<cstdio>
-#include<fstream>
-#include"storing.h"
-#include "extract.cpp"
+#include"classes.h"
 using namespace std;
 int main(){
-    
+    Customer c;
 }

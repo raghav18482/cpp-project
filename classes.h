@@ -3,6 +3,8 @@
 #include<fstream>
 #include"utility.h"
 #include"storing.h"
+#include"design.h"
+#include<iomanip>
 using namespace std;
 
 class Customer{
@@ -17,6 +19,7 @@ class Customer{
         int secretKey;
         string foldername;
         void getData();
+        void displayDetails();
     public:
         Customer(){
             cout<<"Please enter your path : \n";
@@ -85,7 +88,7 @@ void Customer::signin(){
     password=passwordGrab(username);
     if(compareHashString(passuser,password,secretKey)){
         getData();
-        cout<<firstName;
+        displayDetails();
     }
     else{
         cout<<"Auth failed";
@@ -106,6 +109,18 @@ void Customer::getData(){
 
 }
 
+void Customer::displayDetails(){
+    curveLine(10);
+    cout<<"Here Are your details"<<endl;
+    line(10);
+    cout<<"| "<<setw(15)<<"First Name "<<"| "<<setw(15)<<firstName<<" |";
+    line(10);
+    cout<<"| "<<setw(15)<<"Last Name "<<"| "<<setw(15)<<lastName<<" |";
+    line(10);
+    cout<<"| "<<setw(15)<<"Gender "<<"| "<<setw(15)<<gender<<" |";
+    line(10);
+}
+
 
 
 class Donate:public Customer{
@@ -117,12 +132,4 @@ class Donate:public Customer{
         }
 
 };
-
-
-
-int main(int argc, char const *argv[])
-{
-    Customer c;
-    return 0;
-}
 
