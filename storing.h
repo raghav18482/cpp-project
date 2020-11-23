@@ -80,6 +80,16 @@ void updateTransactionId(int id){
 }
 
 
+bool checkForPath(string path){
+        ifstream in;
+        in.open(path.c_str());
+        if(in)
+        return true;
+        else
+        return false;
+}
+
+
      
 
 

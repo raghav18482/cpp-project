@@ -4,7 +4,6 @@
 #include"utility.h"
 #include"storing.h"
 #include"design.h"
-#include<iomanip>
 using namespace std;
 
 class Customer{
@@ -116,18 +115,12 @@ void Customer::displayDetails(){
     curveLine(10);
     cout<<"Here Are your details"<<endl;
     line(10);
-    cout<<"| "<<setw(15)<<"First Name "<<"| "<<setw(23)<<firstName<<" |";
-    line(10);
-    cout<<"| "<<setw(15)<<"Last Name "<<"| "<<setw(23)<<lastName<<" |";
-    line(10);
-    cout<<"| "<<setw(15)<<"Gender "<<"| "<<setw(23)<<gender<<" |";
-    line(10);
-    cout<<"| "<<setw(15)<<"Age "<<"| "<<setw(23)<<age<<" |";
-    line(10);
-    cout<<"| "<<setw(15)<<"Username "<<"| "<<setw(23)<<username<<" |";
-    line(10);
-    cout<<"| "<<setw(15)<<"Created On "<<"| "<<setw(23)<<createdOn<<" |";
-    line(10);
+    getRow("First Name",firstName);
+    getRow("Last Name",lastName);
+    getRow("Gender",gender);
+    getRow("Age",to_string(age));
+    getRow("Username",username);
+    getRow("Created On",createdOn);
 }
 
 
@@ -152,11 +145,12 @@ class Donate:public Customer{
             this->createdOn=c.createdOn;
             foldername+="donation";
             makeFolder(foldername);
+            choose();
         }
         void takeDonation();
         void displayDonationTicket();
-        
-
+        void retrieveDonation();
+        void choose();
 };
 
 int Donate::transactionId=getTransactionId();
@@ -183,15 +177,61 @@ void Donate::takeDonation(){
     storeDonation(dateTime,money,transactionId,foldername);
 }
 
+void Donate::retrieveDonation(){
+    cout<<"Please Enter the Transaction id : ";
+    int t;
+    cin>>t;
+    while (true)
+    {
+        if(checkForPath(foldername+"/"+to_string(t)+".txt")){
+            transactionId=t;
+            foldername+="/"+to_string(transactionId)+".txt";
+            break;
+        }
+
+        cout<<"Wrong Transaction id please enter again : ";
+        cin>>t;
+    }
+    string temp;
+    ifstream in;
+    in.open(foldername.c_str());
+    getline(in,temp);
+    getline(in,dateTime);
+    money=conversionOfStringToInt(temp);
+    in.close();
+    line(10);
+    curveLine(10);
+    displayDonationTicket();
+}
+
+void Donate::choose(){
+    int option;
+    setTextColor(5);
+    cout<<"Choose The Path : "<<endl<<"1. Donate"<<endl<<"2. See previous donation "<<endl;
+    setTextColor(7);
+    cin>>option;
+    while (true)
+    {
+        if(option==1 || option==2){
+            break;
+        }
+        setTextColor(4);
+        cout<<"Wrong Choose again : ";
+        cin>>option;
+    }
+    setTextColor(7);
+    if(option==1)takeDonation();
+    else retrieveDonation();
+}
+
 void Donate::displayDonationTicket(){
     curveLine(10);
     cout<<"Here is your ticket please printout it :";
     line(10);
-    cout<<"| "<<setw(15)<<"Transaction Id"<<" | "<<setw(23)<<transactionId<<" |";
-    line(10);
-    cout<<"| "<<setw(15)<<"Money donated"<<" | "<<setw(23)<<money<<" |";
-    line(10);
-    cout<<"| "<<setw(15)<<"Date Time"<<" | "<<setw(23)<<dateTime<<" |";
-    line(10);
+    getRow("Transaction Id",to_string(transactionId));
+    getRow("Money Donated",to_string(money));
+    getRow("Date Time",dateTime);
 }
+
+
 

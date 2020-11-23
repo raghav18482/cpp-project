@@ -10,5 +10,4 @@ int main(){
     cin>>option;
     Customer c(option);
     Donate d(c);
-    d.takeDonation();
 }
