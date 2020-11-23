@@ -6,13 +6,11 @@
 #include<bits/stdc++.h>
 #include<conio.h>
 #include<unistd.h>
-#include<sstream>
 #include<string>
 #include"utility.h"
 using namespace std;
-void makeFolder(string username){
-        string foldername="data/"+username;
-        mkdir(foldername.c_str());
+void makeFolder(string path){
+        mkdir(path.c_str());
 }
 
 bool checkUsername(string username){
@@ -35,7 +33,7 @@ string passwordGrab(string username){
         return t;
 }
 
-void storeData(int age, string gender,string firstName,string lastName, string folderName,string password){
+void storeData(int age, string gender,string firstName,string lastName, string folderName,string password,string createdOn){
         string url=folderName+"personal.txt";
         ofstream out;
         out.open(url.c_str());
@@ -43,12 +41,44 @@ void storeData(int age, string gender,string firstName,string lastName, string f
         out<<lastName<<endl;
         out<<gender<<endl;
         out<<age<<endl;
+        out<<createdOn<<endl;
         out.close();
         url=folderName+"p.txt";
         out.open(url.c_str());
         out<<password<<endl;
         out.close();
 }
+
+
+void storeDonation(string timeOfDonation,int money, int transactionId,string foldername){
+        string url=foldername+"/"+to_string(transactionId)+".txt";
+        ofstream out;
+        out.open(url.c_str());
+        out<<money<<endl;
+        out<<timeOfDonation<<endl;
+        out.close();
+}
+
+
+int getTransactionId(){
+        string url="data/currentTransactionId.txt";
+        string temp;
+        int t;
+        ifstream in;
+        in.open(url.c_str());
+        getline(in,temp);
+        t=conversionOfStringToInt(temp);
+        return t;
+}
+
+void updateTransactionId(int id){
+        string url="data/currentTransactionId.txt";
+        ofstream out;
+        out.open(url.c_str());
+        out<<id<<endl;
+        out.close();
+}
+
 
      
 

@@ -1,5 +1,8 @@
 #include<iostream>
 #include<string>
+#include<sstream>
+#include <chrono> 
+#include <ctime> 
 using namespace std;
 #pragma once
 
@@ -33,4 +36,21 @@ string returnOriginalString(string hashed,int key){
 
     return temp;
     
+}
+
+
+int conversionOfStringToInt(string a){
+    stringstream meow(a);
+    int x=0;
+    meow>>x;
+    return x;
+}
+
+
+string returnCurrentTime(){
+    	auto timenow = 
+	chrono::system_clock::to_time_t(chrono::system_clock::now()); 
+    string temp=ctime(&timenow);
+    temp[temp.length()-1]='\0';
+	return temp;
 }

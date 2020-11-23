@@ -18,14 +18,13 @@ class Customer{
         string password;
         int secretKey;
         string foldername;
+        string createdOn;
         void getData();
-        void displayDetails();
     public:
-        Customer(){
-            cout<<"Please enter your path : \n";
-            cout<<"1. SignUp"<<endl<<"2. Singin"<<endl; 
-            int option;
-            cin>>option;
+    void displayDetails();
+    friend class Donate;
+        Customer(){}
+        Customer(int option){
             if(option==1){
                 signUp();
             }
@@ -63,9 +62,11 @@ void Customer::signUp(){
             cout<<"Please enter a password : ";
             cin>>password;
             password=hashString(password,secretKey);
-            makeFolder(username);
-            foldername="data/"+username+"/";
-            storeData(age,gender,firstName,lastName,foldername,password);
+            foldername="data/"+username;
+            makeFolder(foldername);
+            foldername+="/";
+            createdOn=returnCurrentTime();
+            storeData(age,gender,firstName,lastName,foldername,password,createdOn);
 }
 
 void Customer::signin(){
@@ -106,6 +107,8 @@ void Customer::getData(){
     getline(in,lastName);
     getline(in,gender);
     getline(in,temp);
+    getline(in,createdOn);
+    age=conversionOfStringToInt(temp);
 
 }
 
@@ -113,23 +116,82 @@ void Customer::displayDetails(){
     curveLine(10);
     cout<<"Here Are your details"<<endl;
     line(10);
-    cout<<"| "<<setw(15)<<"First Name "<<"| "<<setw(15)<<firstName<<" |";
+    cout<<"| "<<setw(15)<<"First Name "<<"| "<<setw(23)<<firstName<<" |";
     line(10);
-    cout<<"| "<<setw(15)<<"Last Name "<<"| "<<setw(15)<<lastName<<" |";
+    cout<<"| "<<setw(15)<<"Last Name "<<"| "<<setw(23)<<lastName<<" |";
     line(10);
-    cout<<"| "<<setw(15)<<"Gender "<<"| "<<setw(15)<<gender<<" |";
+    cout<<"| "<<setw(15)<<"Gender "<<"| "<<setw(23)<<gender<<" |";
+    line(10);
+    cout<<"| "<<setw(15)<<"Age "<<"| "<<setw(23)<<age<<" |";
+    line(10);
+    cout<<"| "<<setw(15)<<"Username "<<"| "<<setw(23)<<username<<" |";
+    line(10);
+    cout<<"| "<<setw(15)<<"Created On "<<"| "<<setw(23)<<createdOn<<" |";
     line(10);
 }
 
 
 
 class Donate:public Customer{
+    protected:
     int money;
     static int transactionId;
+    string dateTime;
     public:
-        Donate(){
-            cout<<"Enter the money you want to donate : ";
+        Donate(){}
+
+        Donate(Customer &c){
+            this->firstName=c.firstName;
+            this->lastName=c.lastName;
+            this->age=c.age;
+            this->gender=c.gender;
+            this->secretKey=c.secretKey;
+            this->foldername=c.foldername;
+            this->username=c.username;
+            this->password=c.password;
+            this->createdOn=c.createdOn;
+            foldername+="donation";
+            makeFolder(foldername);
         }
+        void takeDonation();
+        void displayDonationTicket();
+        
 
 };
+
+int Donate::transactionId=getTransactionId();
+
+void Donate::takeDonation(){
+    cout<<"Please enter the amount you wanna donate : "<<endl;
+    cin>>money;
+    while (true)
+    {
+        if(money>0){
+            break;
+        }
+        cout<<"Please enter valid amount of money : ";
+        cin>>money;
+    }
+    dateTime=returnCurrentTime();
+    cout<<dateTime;
+    transactionId++;
+    updateTransactionId(transactionId);
+    curveLine(10);
+    cout<<"Congrats Your donation was successfull";
+    line(10);
+    displayDonationTicket();
+    storeDonation(dateTime,money,transactionId,foldername);
+}
+
+void Donate::displayDonationTicket(){
+    curveLine(10);
+    cout<<"Here is your ticket please printout it :";
+    line(10);
+    cout<<"| "<<setw(15)<<"Transaction Id"<<" | "<<setw(23)<<transactionId<<" |";
+    line(10);
+    cout<<"| "<<setw(15)<<"Money donated"<<" | "<<setw(23)<<money<<" |";
+    line(10);
+    cout<<"| "<<setw(15)<<"Date Time"<<" | "<<setw(23)<<dateTime<<" |";
+    line(10);
+}
 
