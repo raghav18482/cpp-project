@@ -134,7 +134,6 @@ class Donate:public Customer{
     string dateTime;
     public:
         Donate(){}
-
         Donate(Customer &c){
             this->firstName=c.firstName;
             this->lastName=c.lastName;
@@ -275,8 +274,9 @@ void Report::takeReport(){
     storeReport(dateTime,report,reportId,address,foldername);
     updateId(reportId,"currentReportId");
     curveLine(10);
-    cout<<"Congrats Your donation was successfull";
+    cout<<"Congrats Your Report has been recorded";
     line(10);
+    displayReportTicket();
 }
 
 
