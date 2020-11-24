@@ -5,6 +5,7 @@
 #include"storing.h"
 #include"design.h"
 using namespace std;
+#pragma once
 
 class Customer{
     protected:
@@ -22,6 +23,7 @@ class Customer{
     public:
     void displayDetails();
     friend class Donate;
+    friend class Report;
         Customer(){}
         Customer(int option){
             if(option==1){
@@ -167,9 +169,8 @@ void Donate::takeDonation(){
         cin>>money;
     }
     dateTime=returnCurrentTime();
-    cout<<dateTime;
     transactionId++;
-    updateTransactionId(transactionId);
+    updateId(transactionId,"currentTransactionId");
     curveLine(10);
     cout<<"Congrats Your donation was successfull";
     line(10);
@@ -232,6 +233,115 @@ void Donate::displayDonationTicket(){
     getRow("Money Donated",to_string(money));
     getRow("Date Time",dateTime);
 }
+
+
+class Report:public Customer{
+    static int reportId;
+    string report;
+    string address;
+    string dateTime;
+    public:
+        Report(Customer &c){
+            this->firstName=c.firstName;
+            this->lastName=c.lastName;
+            this->age=c.age;
+            this->gender=c.gender;
+            this->secretKey=c.secretKey;
+            this->foldername=c.foldername;
+            this->username=c.username;
+            this->password=c.password;
+            this->createdOn=c.createdOn;
+            foldername+="reports";
+            makeFolder(foldername);
+            choose();
+        }
+        void takeReport();
+        void retrieveReport();
+        void displayReportTicket();
+        void choose();
+
+};
+
+int Report::reportId=getReportId();
+
+void Report::takeReport(){
+    cout<<"Please Write about the animal you are reporting about : "<<endl;
+    cin.ignore();
+    getline(cin,report);
+    cout<<"Please enter the address here where you find the animal : "<<endl;
+    getline(cin,address);
+    dateTime=returnCurrentTime();
+    reportId++;
+    storeReport(dateTime,report,reportId,address,foldername);
+    updateId(reportId,"currentReportId");
+    curveLine(10);
+    cout<<"Congrats Your donation was successfull";
+    line(10);
+}
+
+
+void Report::retrieveReport(){
+    cout<<"Please Enter the Report id : ";
+    int t;
+    cin>>t;
+    while (true)
+    {
+        if(checkForPath(foldername+"/"+to_string(t)+".txt")){
+            reportId=t;
+            foldername+="/"+to_string(reportId)+".txt";
+            break;
+        }
+
+        cout<<"Wrong Transaction id please enter again : ";
+        cin>>t;
+    }
+    string temp;
+    ifstream in;
+    in.open(foldername.c_str());
+    getline(in,report);
+    getline(in,address);
+    getline(in,dateTime);
+    in.close();
+    line(10);
+    curveLine(10);
+    displayReportTicket();
+}
+
+void Report::displayReportTicket(){
+    curveLine(10);
+    cout<<"Here is your ticket please printout it :";
+    line(10);
+    getRow("Transaction Id",to_string(reportId));
+    getRow("Your Report",report);
+    getRow("Address ",address);
+    getRow("Date Time",dateTime);
+}
+
+
+void Report::choose(){
+    int option;
+    setTextColor(5);
+    cout<<"Choose The Path : "<<endl<<"1. Report"<<endl<<"2. See previous Reports "<<endl;
+    setTextColor(7);
+    cin>>option;
+    while (true)
+    {
+        if(option==1 || option==2){
+            break;
+        }
+        setTextColor(4);
+        cout<<"Wrong Choose again : ";
+        cin>>option;
+    }
+    setTextColor(7);
+    if(option==1)takeReport();
+    else retrieveReport();
+}
+
+
+
+
+
 
 
 

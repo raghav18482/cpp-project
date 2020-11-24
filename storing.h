@@ -59,6 +59,16 @@ void storeDonation(string timeOfDonation,int money, int transactionId,string fol
         out.close();
 }
 
+void storeReport(string timeOfDonation,string report, int reportId,string address,string foldername){
+        string url=foldername+"/"+to_string(reportId)+".txt";
+        ofstream out;
+        out.open(url.c_str());
+        out<<report<<endl;
+        out<<address<<endl;
+        out<<timeOfDonation<<endl;
+        out.close();
+}
+
 
 int getTransactionId(){
         string url="data/currentTransactionId.txt";
@@ -70,14 +80,25 @@ int getTransactionId(){
         t=conversionOfStringToInt(temp);
         return t;
 }
+int getReportId(){
+        string url="data/currentReportId.txt";
+        string temp;
+        int t;
+        ifstream in;
+        in.open(url.c_str());
+        getline(in,temp);
+        t=conversionOfStringToInt(temp);
+        return t;
+}
 
-void updateTransactionId(int id){
-        string url="data/currentTransactionId.txt";
+void updateId(int id,string action){
+        string url="data/"+action+".txt";
         ofstream out;
         out.open(url.c_str());
         out<<id<<endl;
         out.close();
 }
+
 
 
 bool checkForPath(string path){
