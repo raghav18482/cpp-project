@@ -70,11 +70,11 @@ void Customer::signUp()
     cin >> firstName;
     cout << "Enter the last Name: ";
     cin >> lastName;
-    cout << "Age??";
+    cout << "Age?? ";
     cin >> age;
     cout << "Gender: ";
     cin >> gender;
-    cout << "Please create a username for yourself : ";
+    cout << "Please create a username for yourself: ";
     cin >> username;
     while (true)
     {
@@ -161,9 +161,9 @@ void Customer::getData()
 
 void Customer::displayDetails()
 {
-    curveLine(10);
+    curveLine(8);
     cout << "Here Are your details" << endl;
-    line(10);
+    line(5);
     getRow("First Name", firstName);
     getRow("Last Name", lastName);
     getRow("Gender", gender);
@@ -220,9 +220,9 @@ void Donate::takeDonation()
     dateTime = returnCurrentTime();
     transactionId++;
     updateId(transactionId, "currentTransactionId");
-    curveLine(10);
+    curveLine(8);
     cout << "Congrats Your donation was successfull";
-    line(10);
+    line(5);
     displayDonationTicket();
     storeDonation(dateTime, money, transactionId, foldername);
 }
@@ -251,15 +251,15 @@ void Donate::retrieveDonation()
     getline(in, dateTime);
     money = conversionOfStringToInt(temp);
     in.close();
-    line(10);
-    curveLine(10);
+    line(5);
+    curveLine(8);
     displayDonationTicket();
 }
 
 void Donate::choose()
 {
     int option;
-    setTextColor(5);
+    setTextColor(6);
     cout << "Choose The Path : " << endl
          << "1. Donate" << endl
          << "2. See previous donation " << endl;
@@ -284,9 +284,9 @@ void Donate::choose()
 
 void Donate::displayDonationTicket()
 {
-    curveLine(10);
+    curveLine(8);
     cout << "Here is your ticket please printout it :";
-    line(10);
+    line(5);
     getRow("Transaction Id", to_string(transactionId));
     getRow("Money Donated", to_string(money));
     getRow("Date Time", dateTime);
@@ -334,9 +334,9 @@ void Report::takeReport()
     reportId++;
     storeReport(dateTime, report, reportId, address, foldername);
     updateId(reportId, "currentReportId");
-    curveLine(10);
+    curveLine(8);
     cout << "Congrats Your Report has been recorded";
-    line(10);
+    line(5);
     displayReportTicket();
 }
 
@@ -364,16 +364,16 @@ void Report::retrieveReport()
     getline(in, address);
     getline(in, dateTime);
     in.close();
-    line(10);
-    curveLine(10);
+    line(5);
+    curveLine(8);
     displayReportTicket();
 }
 
 void Report::displayReportTicket()
 {
-    curveLine(10);
+    curveLine(8);
     cout << "Here is your ticket please printout it :";
-    line(10);
+    line(5);
     getRow("Transaction Id", to_string(reportId));
     getRow("Your Report", report);
     getRow("Address ", address);
@@ -383,7 +383,7 @@ void Report::displayReportTicket()
 void Report::choose()
 {
     int option;
-    setTextColor(5);
+    setTextColor(6);
     cout << "Choose The Path : " << endl
          << "1. Report" << endl
          << "2. See previous Reports " << endl;

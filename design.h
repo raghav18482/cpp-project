@@ -15,14 +15,14 @@ void line(int color)
 void curveLine(int color)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-    cout <<endl<< "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+    cout <<endl<< "=================================================================" << endl;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 }
 
 
 void getRow(string label,string value){
-    cout<<"| "<<setw(15)<<label<<"| "<<setw(25)<<value<<" |";
-    line(10);
+    cout<<"| "<<setw(15)<<setiosflags(ios::left)<<label<<"| "<<setw(25)<<setiosflags(ios::left)<<value<<" |";
+    line(5);
 }
 
 

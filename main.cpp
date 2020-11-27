@@ -2,15 +2,17 @@
 #include"classes.h"
 using namespace std;
 int main(){
-    cout<<"Welcome to meow meow PET NGO";
-    curveLine(9);
+	setTextColor(4);
+    cout<<" Welcome to FirstJoy Pet NGO";
+    curveLine(10);
+    setTextColor(7);
     cout<<"Please enter your path : \n";
-            cout<<"1. SignUp"<<endl<<"2. Singin"<<endl; 
+            cout<<"1. SignUp"<<endl<<"2. SignIn"<<endl; 
     int option;
     cin>>option;
     Customer c(option);
     cout<<"Please select what do you wanna do :"<<endl;
-    line(10);
+    line(5);
     getRow("1.","Donate");
     getRow("2.","Report");
     cin>>option;
