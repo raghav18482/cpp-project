@@ -63,7 +63,7 @@ void storeDonation(string timeOfDonation, int money, int transactionId, string f
         out.close();
 }
 
-void storeReport(string timeOfDonation, string report, int reportId, string address, string foldername)
+void storeReport(string timeOfDonation, string report, int reportId, string address,string type,string breed, string foldername)
 {
         string url = foldername + "/" + to_string(reportId) + ".txt";
         ofstream out;
@@ -71,6 +71,8 @@ void storeReport(string timeOfDonation, string report, int reportId, string addr
         out << report << endl;
         out << address << endl;
         out << timeOfDonation << endl;
+        out<<type<<endl;
+        out<<breed<<endl;
         out.close();
 }
 
@@ -114,4 +116,17 @@ bool checkForPath(string path)
                 return true;
         else
                 return false;
+}
+
+
+void storePet(string type,string desc,string breed,string datetime,int reportId){
+        string url="data/pets/"+type+"s.txt";
+        ofstream out(url.c_str(),ios::app);
+        out<<endl;
+        out<<reportId<<endl;
+        out<<breed<<endl;
+        out<<desc<<endl;
+        out<<datetime<<endl;
+        out<<endl;
+        out.close();
 }

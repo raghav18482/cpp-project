@@ -15,11 +15,15 @@ int main(){
     line(5);
     getRow("1.","Donate");
     getRow("2.","Report");
+    getRow("3.","Adopt");
     cin>>option;
     if(option==1){
         Donate d(c);
     }
     else if(option==2){
         Report r(c);
+    }
+    else if(option==3){
+        Adoption a(c);
     }
 }

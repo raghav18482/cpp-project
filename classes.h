@@ -6,7 +6,6 @@
 5. whole thing is stored in filing system 
 */
 
-
 //standard libs
 #include <iostream>
 #include <string>
@@ -17,11 +16,8 @@
 #include "storing.h"
 #include "design.h"
 
-
 using namespace std;
 #pragma once
-
-
 
 //base class
 class Customer
@@ -44,6 +40,7 @@ public:
     //making derived class as friends
     friend class Donate;
     friend class Report;
+    friend class Adoption;
     Customer() {}
     //authentication choosing
     Customer(int option)
@@ -61,7 +58,6 @@ public:
     void signUp();
     void signin();
 };
-
 
 //signup for user
 void Customer::signUp()
@@ -104,7 +100,6 @@ void Customer::signUp()
     storeData(age, gender, firstName, lastName, foldername, password, createdOn);
 }
 
-
 //signing in user
 void Customer::signin()
 {
@@ -126,7 +121,6 @@ void Customer::signin()
     string passuser;
     cout << "Please enter the password : ";
     cin >> passuser;
-    
 
     //grabing hashed password from file
     password = passwordGrab(username);
@@ -142,7 +136,6 @@ void Customer::signin()
         cout << "Auth failed";
     }
 }
-
 
 //fetching data from file into object
 void Customer::getData()
@@ -298,8 +291,11 @@ class Report : public Customer
     string report;
     string address;
     string dateTime;
+    string type;
+    string breed;
 
 public:
+    Report() {}
     Report(Customer &c)
     {
         this->firstName = c.firstName;
@@ -325,19 +321,24 @@ int Report::reportId = getReportId();
 
 void Report::takeReport()
 {
-    cout << "Please Write about the animal you are reporting about : " << endl;
+    cout << "Please Write about the animal you are reporting about(like feautures color n all) : " << endl;
     cin.ignore();
     getline(cin, report);
     cout << "Please enter the address here where you find the animal : " << endl;
     getline(cin, address);
+    cout << "Please enter the type of animal(eg. dog,cat) :" << endl;
+    getline(cin, type);
+    cout << "Please tell the breed of animal if you can " << endl;
+    getline(cin, breed);
     dateTime = returnCurrentTime();
     reportId++;
-    storeReport(dateTime, report, reportId, address, foldername);
+    storeReport(dateTime, report, reportId, address, type, breed, foldername);
     updateId(reportId, "currentReportId");
     curveLine(8);
     cout << "Congrats Your Report has been recorded";
     line(5);
     displayReportTicket();
+    storePet(type, report, breed, dateTime, reportId);
 }
 
 void Report::retrieveReport()
@@ -354,7 +355,7 @@ void Report::retrieveReport()
             break;
         }
 
-        cout << "Wrong Transaction id please enter again : ";
+        cout << "Wrong Report id please enter again : ";
         cin >> t;
     }
     string temp;
@@ -363,6 +364,8 @@ void Report::retrieveReport()
     getline(in, report);
     getline(in, address);
     getline(in, dateTime);
+    getline(in, type);
+    getline(in, breed);
     in.close();
     line(5);
     curveLine(8);
@@ -377,6 +380,8 @@ void Report::displayReportTicket()
     getRow("Transaction Id", to_string(reportId));
     getRow("Your Report", report);
     getRow("Address ", address);
+    getRow("Type", type);
+    getRow("Breed", breed);
     getRow("Date Time", dateTime);
 }
 
@@ -406,3 +411,111 @@ void Report::choose()
         retrieveReport();
 }
 
+class Adoption : public Customer
+{
+
+    string type;
+    string id;
+    string breed;
+    string dateTime;
+    string desc;
+    string address;
+    int adoptionId;
+
+public:
+    Adoption(){};
+    Adoption(Customer &c)
+    {
+        this->firstName = c.firstName;
+        this->lastName = c.lastName;
+        this->age = c.age;
+        this->gender = c.gender;
+        this->secretKey = c.secretKey;
+        this->foldername = c.foldername;
+        this->username = c.username;
+        this->password = c.password;
+        this->createdOn = c.createdOn;
+        foldername+="adopted";
+    }
+    void displayAll();
+    void choose();
+    void displayParticularPet();
+};
+
+void Adoption::displayAll()
+{
+    string temp;
+    int i = 0;
+    ifstream no("data/pets/dogscount.txt");
+    getline(no, temp);
+    int j = conversionOfStringToInt(temp);
+    string url = "data/pets/dogs.txt";
+    ifstream in(url.c_str());
+    getline(in, temp);
+    while (i < j)
+    {
+        getline(in, temp);
+        getline(in, id);
+        getline(in, breed);
+        getline(in, desc);
+        getline(in, dateTime);
+        getline(in, temp);
+        getRow("ID", id);
+        getRow("Breed", breed);
+        getRow("desc", desc);
+        getRow("DateTime", dateTime);
+        i++;
+    }
+    in.close();
+    choose();
+}
+
+void Adoption::choose(){
+    adoptionId=-1;
+    int temp;
+    curveLine(7);
+    cout<<"Please select the id of the pet u wanna select"<<endl;
+    cin>>temp;
+    string temp2;
+    int i = 0;
+    ifstream no("data/pets/dogscount.txt");
+    getline(no, temp2);
+    int j=conversionOfStringToInt(temp2);
+    string url = "data/pets/dogs.txt";
+    ifstream in(url.c_str());
+    getline(in, temp2);
+    while (i < j)
+    {
+        getline(in, temp2);
+        getline(in, id);
+        getline(in, breed);
+        getline(in, desc);
+        getline(in, dateTime);
+        getline(in, temp2);
+        if(conversionOfStringToInt(id)==temp){
+            adoptionId=temp;
+        }
+        i++;
+    }
+
+    if(adoptionId==-1){
+        cout<<"Please select a valid id :";
+        choose();
+    }
+    else{
+        displayParticularPet();
+    }
+
+}
+
+void Adoption::displayParticularPet(){
+    cout<<"Here is your pet "<<endl;
+    curveLine(7);
+    cout<<endl;
+    line(8);
+    getRow("ID", to_string(adoptionId));
+    getRow("Breed", breed);
+    getRow("desc", desc);
+    getRow("DateTime", dateTime);
+
+}
