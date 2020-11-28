@@ -405,3 +405,4 @@ void Report::choose()
     else
         retrieveReport();
 }
+
