@@ -63,7 +63,7 @@ void storeDonation(string timeOfDonation, int money, int transactionId, string f
         out.close();
 }
 
-void storeReport(string timeOfDonation, string report, int reportId, string address,string type,string breed, string foldername)
+void storeReport(string timeOfDonation, string report, int reportId, string address, string type, string breed, string foldername)
 {
         string url = foldername + "/" + to_string(reportId) + ".txt";
         ofstream out;
@@ -71,8 +71,20 @@ void storeReport(string timeOfDonation, string report, int reportId, string addr
         out << report << endl;
         out << address << endl;
         out << timeOfDonation << endl;
-        out<<type<<endl;
-        out<<breed<<endl;
+        out << type << endl;
+        out << breed << endl;
+        out.close();
+}
+
+void storeAdoption(string adoptionTime, string desc, int adoptionId, string type, string breed, string foldername)
+{
+        string url = foldername + "/" + to_string(adoptionId) + ".txt";
+        ofstream out;
+        out.open(url.c_str());
+        out << type << endl;
+        out << desc << endl;
+        out << breed << endl;
+        out << adoptionTime << endl;
         out.close();
 }
 
@@ -90,6 +102,18 @@ int getTransactionId()
 int getReportId()
 {
         string url = "data/currentReportId.txt";
+        string temp;
+        int t;
+        ifstream in;
+        in.open(url.c_str());
+        getline(in, temp);
+        t = conversionOfStringToInt(temp);
+        return t;
+}
+
+int getAdoptionId()
+{
+        string url = "data/currentAdoptionId.txt";
         string temp;
         int t;
         ifstream in;
@@ -118,15 +142,79 @@ bool checkForPath(string path)
                 return false;
 }
 
+void storePet(string type, string desc, string breed, string datetime, int reportId)
+{
+        string url = "data/pets/" + type + "s.txt";
+        if (checkForPath(url))
+        {
+                ofstream out(url.c_str(), ios::app);
+                out << endl;
+                out << reportId << endl;
+                out << breed << endl;
+                out << desc << endl;
+                out << datetime << endl;
+                out << endl;
+                out.close();
+        }
+        else
+        {
+                ofstream out(url.c_str(), ios::app);
+                out << endl;
+                out << endl;
+                out << reportId << endl;
+                out << breed << endl;
+                out << desc << endl;
+                out << datetime << endl;
+                out << endl;
+                out.close();
+        }
 
-void storePet(string type,string desc,string breed,string datetime,int reportId){
-        string url="data/pets/"+type+"s.txt";
-        ofstream out(url.c_str(),ios::app);
-        out<<endl;
-        out<<reportId<<endl;
-        out<<breed<<endl;
-        out<<desc<<endl;
-        out<<datetime<<endl;
-        out<<endl;
-        out.close();
+        url = "data/pets/" + type + "scount.txt";
+        int j = 0;
+        string temp;
+        if(checkForPath(url)){
+                ifstream file(url.c_str());
+                getline(file,temp);
+                j=conversionOfStringToInt(temp);
+                j++;
+                file.close();
+                ofstream out(url.c_str());
+                out<<j;
+                out.close();
+        }
+        else{
+                ofstream out(url.c_str());
+                out<<"1";
+                out.close();
+        }
 }
+
+void deleteItem(string id, string path)
+{
+        cout<<id<<endl;
+        ifstream in(path.c_str());
+        string p2 = "data/pets/temp.txt";
+        ofstream out(p2.c_str());
+        string line;
+        while (getline(in, line))
+        {
+                if (line == id)
+                {
+                        getline(in, line);
+                        getline(in, line);
+                        getline(in, line);
+                        getline(in, line);
+                        getline(in, line);
+                        getline(in, line);
+                }
+                out << line << endl;
+        }
+        in.close();
+        out.close();
+        remove(path.c_str());
+        rename(p2.c_str(), path.c_str());
+}
+
+
+
+

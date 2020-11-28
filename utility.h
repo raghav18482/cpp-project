@@ -5,7 +5,7 @@
 #include <ctime>
 using namespace std;
 #pragma once
-
+string returnOriginalString(string,int);
 string hashString(string destination, int key)
 {
     char temp[destination.length()];
@@ -18,12 +18,8 @@ string hashString(string destination, int key)
 
 bool compareHashString(string destination, string comparator, int key)
 {
-    for (int i = 0; i < comparator.length(); i++)
-    {
-        if (destination[i] != comparator[i] - key)
-        {
-            return false;
-        }
+    if(returnOriginalString(comparator,key)!=destination){
+        return false;
     }
 
     return true;

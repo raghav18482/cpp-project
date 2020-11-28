@@ -82,7 +82,7 @@ void Customer::signUp()
         cin >> username;
     }
 
-    cout << "Please enter a secret key and remember it for future reference: ";
+    cout << "Please enter a secret number(0-10): ";
     cin >> secretKey;
     cout << "Please enter a password : ";
     cin >> password;
@@ -111,12 +111,12 @@ void Customer::signin()
         {
             break;
         }
-        cout << "You entered a wrong username"
+        cout << "You entered a wrong username "
              << "please enter a valid username : ";
         cin >> username;
     }
     foldername = "data/" + username + "/";
-    cout << "Please enter the secret key u entered with your password last time : ";
+    cout << "Please enter your secret number : ";
     cin >> secretKey;
     string passuser;
     cout << "Please enter the password : ";
@@ -133,7 +133,10 @@ void Customer::signin()
     }
     else
     {
-        cout << "Auth failed";
+        setTextColor(4);
+        cout<<"Incorrect Credentials !!!!!  "<<endl;
+        setTextColor(7);
+        signin();
     }
 }
 
@@ -421,6 +424,7 @@ class Adoption : public Customer
     string desc;
     string address;
     int adoptionId;
+    string adoptionTime;
 
 public:
     Adoption(){};
@@ -435,53 +439,72 @@ public:
         this->username = c.username;
         this->password = c.password;
         this->createdOn = c.createdOn;
-        foldername+="adopted";
+        foldername += "adopted";
+        makeFolder(foldername);
+        cout << "Please Tell the animal you are looking for(eg. dog ,cat): " << endl;
+        cin >> type;
+        displayAll(type);
     }
-    void displayAll();
-    void choose();
+    void displayAll(string);
+    void choose(string);
     void displayParticularPet();
 };
 
-void Adoption::displayAll()
+void Adoption::displayAll(string typeUser = "dog")
 {
-    string temp;
-    int i = 0;
-    ifstream no("data/pets/dogscount.txt");
-    getline(no, temp);
-    int j = conversionOfStringToInt(temp);
-    string url = "data/pets/dogs.txt";
-    ifstream in(url.c_str());
-    getline(in, temp);
-    while (i < j)
+    string url = "data/pets/" + typeUser + "s.txt";
+    string urlForCount = "data/pets/" + typeUser + "scount.txt";
+    if (checkForPath(url))
     {
+        string temp;
+        int i = 0;
+        ifstream no(urlForCount.c_str());
+        getline(no, temp);
+        no.close();
+        int j = conversionOfStringToInt(temp);
+        ifstream in(url.c_str());
         getline(in, temp);
-        getline(in, id);
-        getline(in, breed);
-        getline(in, desc);
-        getline(in, dateTime);
-        getline(in, temp);
-        getRow("ID", id);
-        getRow("Breed", breed);
-        getRow("desc", desc);
-        getRow("DateTime", dateTime);
-        i++;
+        while (i < j)
+        {
+            getline(in, temp);
+            getline(in, id);
+            getline(in, breed);
+            getline(in, desc);
+            getline(in, dateTime);
+            getline(in, temp);
+            getRow("ID", id);
+            getRow("Breed", breed);
+            getRow("desc", desc);
+            getRow("DateTime", dateTime);
+            i++;
+        }
+        in.close();
+        choose(typeUser);
     }
-    in.close();
-    choose();
+    else
+    {
+        cout << "Sorry we dont have those" << endl;
+        cout << "Please Tell the animal you are looking for(eg. dog ,cat): " << endl;
+        cin >> type;
+        displayAll(type);
+    }
 }
 
-void Adoption::choose(){
-    adoptionId=-1;
+void Adoption::choose(string typeUser = "dog")
+{
+    adoptionId = -1;
     int temp;
+    string url = "data/pets/" + typeUser + "s.txt";
+    string urlForCount = "data/pets/" + typeUser + "scount.txt";
     curveLine(7);
-    cout<<"Please select the id of the pet u wanna select"<<endl;
-    cin>>temp;
+    cout << "Please select the id of the pet u wanna select" << endl;
+    cin >> temp;
     string temp2;
     int i = 0;
-    ifstream no("data/pets/dogscount.txt");
+    ifstream no(urlForCount.c_str());
     getline(no, temp2);
-    int j=conversionOfStringToInt(temp2);
-    string url = "data/pets/dogs.txt";
+    no.close();
+    int j = conversionOfStringToInt(temp2);
     ifstream in(url.c_str());
     getline(in, temp2);
     while (i < j)
@@ -492,30 +515,51 @@ void Adoption::choose(){
         getline(in, desc);
         getline(in, dateTime);
         getline(in, temp2);
-        if(conversionOfStringToInt(id)==temp){
-            adoptionId=temp;
+        if (conversionOfStringToInt(id) == temp)
+        {
+            id =to_string(temp);
+            adoptionId=getAdoptionId();
+            adoptionId++;
+            break;
         }
         i++;
     }
+    in.close();
 
-    if(adoptionId==-1){
-        cout<<"Please select a valid id :";
-        choose();
+    if (adoptionId == -1)
+    {
+        cout << "Please select a valid id :";
+        choose(typeUser);
     }
-    else{
+    else
+    {
+        adoptionTime = returnCurrentTime();
+        updateId(adoptionId,"currentAdoptionId");
         displayParticularPet();
+        storeAdoption(adoptionTime,desc,adoptionId,type,breed,foldername);
+        ofstream o(urlForCount.c_str());
+        j--;
+        o<<j;
+        o.close();
+        if(j==0){
+            string urlTemp="data/pets/"+type+"s.txt";
+            remove(urlTemp.c_str());
+        }
     }
-
 }
 
-void Adoption::displayParticularPet(){
-    cout<<"Here is your pet "<<endl;
+void Adoption::displayParticularPet()
+{
+    cout << "Here is your pet " << endl;
     curveLine(7);
-    cout<<endl;
+    cout << endl;
     line(8);
-    getRow("ID", to_string(adoptionId));
+    getRow("Animal Id", id);
+    getRow("Adoption Id", to_string(adoptionId));
     getRow("Breed", breed);
     getRow("desc", desc);
-    getRow("DateTime", dateTime);
-
+    getRow("Bring On", dateTime);
+    getRow("AdoptedOn", adoptionTime);
+    string path = "data/pets/" + type + "s.txt";
+    deleteItem(id, path);
 }
