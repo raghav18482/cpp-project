@@ -52,3 +52,20 @@ string returnCurrentTime()
     temp[temp.length() - 1] = '\0';
     return temp;
 }
+
+struct Visitor{
+    string name;
+    int age;
+    string gender;
+
+    void getDetails(int num){
+        cout<<"Please enter the name of the "<<num+1<<" person : ";
+        cin.ignore();
+        getline(cin,name);
+        cout<<"Please enter the age : ";
+        cin>>age;
+        cout<<"Please enter the gender ";
+        cin>>gender;
+    }
+
+};

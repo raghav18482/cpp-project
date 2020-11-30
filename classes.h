@@ -563,3 +563,23 @@ void Adoption::displayParticularPet()
     string path = "data/pets/" + type + "s.txt";
     deleteItem(id, path);
 }
+
+
+
+class TicketCounter: public Customer{
+    int ticketId;
+    int numberOfBooking;
+    int slot;
+    string timeOfBooking;
+    public:
+        TicketCounter(){
+            cout<<"How many tickets do u want : ";
+            cin>>numberOfBooking;
+            struct Visitor *ticket =new struct Visitor[numberOfBooking];
+            for (int i = 0; i < numberOfBooking; i++)
+            {
+                ticket[i].getDetails(i);
+            }
+            
+        }
+};
