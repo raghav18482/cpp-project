@@ -216,5 +216,29 @@ void deleteItem(string id, string path)
 }
 
 
+bool checkSlot(int slot,int numberOfTickets){
+        int arr[4]={9,12,15,17};
+        string temp;
+        temp=returnCurrentTime()[11]+returnCurrentTime()[12];
+        if(conversionOfStringToInt(temp)>arr[3]){
+                cout<<"NGO is Closed"<<endl;
+                return false;
+        }
+        if(conversionOfStringToInt(temp)<arr[slot-1]){
+                return false;
+        }
+        string url="data/show"+to_string(slot)+".txt";
+        ifstream in(url.c_str());
+        getline(in,temp);
+        in.close();
+        if(conversionOfStringToInt(temp)<numberOfTickets){
+                return false;
+        }
+        return true;
+}
+
+void storeTicket(struct Visitor *visitor,string name,int ticketId,string timeOfBooking){
+        cout<<"STORE TICKET IN FILES"<<endl;
+}
 
 

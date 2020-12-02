@@ -41,6 +41,7 @@ public:
     friend class Donate;
     friend class Report;
     friend class Adoption;
+    friend class TicketCounter;
     Customer() {}
     //authentication choosing
     Customer(int option)
@@ -134,7 +135,7 @@ void Customer::signin()
     else
     {
         setTextColor(4);
-        cout<<"Incorrect Credentials !!!!!  "<<endl;
+        cout << "Incorrect Credentials !!!!!  " << endl;
         setTextColor(7);
         signin();
     }
@@ -517,8 +518,8 @@ void Adoption::choose(string typeUser = "dog")
         getline(in, temp2);
         if (conversionOfStringToInt(id) == temp)
         {
-            id =to_string(temp);
-            adoptionId=getAdoptionId();
+            id = to_string(temp);
+            adoptionId = getAdoptionId();
             adoptionId++;
             break;
         }
@@ -534,15 +535,16 @@ void Adoption::choose(string typeUser = "dog")
     else
     {
         adoptionTime = returnCurrentTime();
-        updateId(adoptionId,"currentAdoptionId");
+        updateId(adoptionId, "currentAdoptionId");
         displayParticularPet();
-        storeAdoption(adoptionTime,desc,adoptionId,type,breed,foldername);
+        storeAdoption(adoptionTime, desc, adoptionId, type, breed, foldername);
         ofstream o(urlForCount.c_str());
         j--;
-        o<<j;
+        o << j;
         o.close();
-        if(j==0){
-            string urlTemp="data/pets/"+type+"s.txt";
+        if (j == 0)
+        {
+            string urlTemp = "data/pets/" + type + "s.txt";
             remove(urlTemp.c_str());
         }
     }
@@ -564,22 +566,83 @@ void Adoption::displayParticularPet()
     deleteItem(id, path);
 }
 
-
-
-class TicketCounter: public Customer{
+class TicketCounter : public Customer
+{
+    protected:
     int ticketId;
     int numberOfBooking;
     int slot;
     string timeOfBooking;
-    public:
-        TicketCounter(){
-            cout<<"How many tickets do u want : ";
-            cin>>numberOfBooking;
-            struct Visitor *ticket =new struct Visitor[numberOfBooking];
-            for (int i = 0; i < numberOfBooking; i++)
-            {
-                ticket[i].getDetails(i);
-            }
-            
-        }
+    void bookTickets();
+    void retrieveTickets();
+
+public:
+    TicketCounter(){};
+    TicketCounter(Customer c)
+    {
+        this->firstName = c.firstName;
+        this->lastName = c.lastName;
+        this->age = c.age;
+        this->gender = c.gender;
+        this->secretKey = c.secretKey;
+        this->foldername = c.foldername;
+        this->username = c.username;
+        this->password = c.password;
+        this->createdOn = c.createdOn;
+        foldername += "tickets";
+        makeFolder(foldername);
+    }
+    void choose();
 };
+
+void TicketCounter::choose()
+{
+    int option;
+    cout << "1. Book a Ticket " << endl
+         << "2. See Your Ticket" << endl;
+    cin>>option;
+    if (option == 1)
+    {
+        bookTickets();
+    }
+    else if (option==2){
+        retrieveTickets();
+    }
+    else{
+        cout<<"Wrong Choice "<<endl<<"Enter again "<<endl;
+        choose();
+    }
+}
+
+
+void TicketCounter::bookTickets(){
+    cout<<"Welcome to our NGO's people fun with animals session"<<endl;
+    cout<<"How Many Tickets Do you wanna book "<<endl;
+    cin>>numberOfBooking;
+    cout<<"Please select a slot :"<<endl;
+    line(5);
+    getRow("No. ","StartTime","EndTime");
+    getRow("1. ","9:00am","11:00am");
+    getRow("2. ","12:00pm","2:00pm");
+    getRow("3. ","3:00pm","5:00pm");
+    getRow("4. ","5:00am","7:00pm");
+    cin>>slot;
+    if(checkSlot(slot,numberOfBooking)){
+        struct Visitor *visitor=new Visitor[numberOfBooking];
+        for (int i = 0; i < numberOfBooking; i++)
+        {
+            visitor[i].getDetails(i);
+        }
+        timeOfBooking=returnCurrentTime();
+        storeTicket(visitor,username,ticketId,timeOfBooking);
+        
+    }
+    else{
+        cout<<"Sorry either slot is already done or full "<<endl;
+        choose();
+    }
+}
+void TicketCounter::retrieveTickets(){
+    cout<<"Welcome to our NGO's people fun with animals session"<<endl;
+
+}

@@ -26,6 +26,10 @@ void getRow(string label,string value){
     cout<<"| "<<setw(15)<<setiosflags(ios::left)<<label<<"| "<<setw(25)<<setiosflags(ios::left)<<value<<" |";
     line(5);
 }
+void getRow(string item1,string item2,string item3){
+    cout<<"| "<<setw(8)<<setiosflags(ios::left)<<item1<<"| "<<setw(25)<<setiosflags(ios::left)<<item2<<" |"<<setw(25)<<setiosflags(ios::left)<<item3<<" |";
+    line(5);
+}
 
 
 void setTextColor(int color){
