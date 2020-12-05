@@ -27,7 +27,7 @@ bool checkUsername(string username)
 
 string passwordGrab(string username)
 {
-        string temp = "data/" + username + "/" + "auth.txt";
+        string temp = "data/" + username + "/" + "p.txt";
         ifstream in;
         in.open(temp.c_str());
         string t;
@@ -114,6 +114,17 @@ int getReportId()
 int getAdoptionId()
 {
         string url = "data/currentAdoptionId.txt";
+        string temp;
+        int t;
+        ifstream in;
+        in.open(url.c_str());
+        getline(in, temp);
+        t = conversionOfStringToInt(temp);
+        return t;
+}
+int getShowId()
+{
+        string url = "data/currentShowId.txt";
         string temp;
         int t;
         ifstream in;
@@ -218,27 +229,61 @@ void deleteItem(string id, string path)
 
 bool checkSlot(int slot,int numberOfTickets){
         int arr[4]={9,12,15,17};
-        string temp;
-        temp=returnCurrentTime()[11]+returnCurrentTime()[12];
-        if(conversionOfStringToInt(temp)>arr[3]){
+        string temp=returnCurrentTime();
+        int hour=getHour(temp);
+        if(hour>arr[3]){
                 cout<<"NGO is Closed"<<endl;
                 return false;
         }
-        if(conversionOfStringToInt(temp)<arr[slot-1]){
+        if(hour>arr[slot-1]){
+                cout<<"temp"<<endl;
                 return false;
         }
-        string url="data/show"+to_string(slot)+".txt";
+        string url="data/show/"+to_string(slot)+".txt";
         ifstream in(url.c_str());
+        if(in){
         getline(in,temp);
         in.close();
         if(conversionOfStringToInt(temp)<numberOfTickets){
                 return false;
         }
         return true;
+        }
+        else{
+                cout<<"Sorry server error "<<endl;
+                return false;
+        }
+
 }
 
-void storeTicket(struct Visitor *visitor,string name,int ticketId,string timeOfBooking){
-        cout<<"STORE TICKET IN FILES"<<endl;
+void storeTicket(struct Visitor *visitor,string username,int ticketId,string timeOfBooking,int numberOfBooking,string foldername){
+        string url=foldername+"/"+to_string(ticketId)+".txt";
+        ofstream out(url.c_str());
+        out<<ticketId<<endl;
+        out<<username<<endl;
+        out<<timeOfBooking<<endl;
+        out<<endl;
+        for (int i = 0; i < numberOfBooking; i++)
+        {
+                out<<visitor[i].name<<endl;
+                out<<visitor[i].age<<endl;
+                out<<visitor[i].gender<<endl;
+                out<<endl;
+        }
+
+        out.close();
+}
+
+
+void updateSlotBooking(int slot,int numberOfTickets){
+        auto url="data/show/"+to_string(slot)+".txt";
+        ifstream in(url.c_str());
+        string temp;
+        getline(in,temp);
+        in.close();
+        ofstream out(url.c_str());
+        out<<to_string(conversionOfStringToInt(temp)-numberOfTickets);
+        out.close();
 }
 
 

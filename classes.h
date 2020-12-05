@@ -591,6 +591,7 @@ public:
         this->createdOn = c.createdOn;
         foldername += "tickets";
         makeFolder(foldername);
+        choose();
     }
     void choose();
 };
@@ -634,8 +635,11 @@ void TicketCounter::bookTickets(){
             visitor[i].getDetails(i);
         }
         timeOfBooking=returnCurrentTime();
-        storeTicket(visitor,username,ticketId,timeOfBooking);
-        
+        ticketId=getShowId();
+        ticketId++;
+        storeTicket(visitor,username,ticketId,timeOfBooking,numberOfBooking,foldername);
+        updateId(ticketId,"currentShowId");
+        updateSlotBooking(slot,numberOfBooking);
     }
     else{
         cout<<"Sorry either slot is already done or full "<<endl;

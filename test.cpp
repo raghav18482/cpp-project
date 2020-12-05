@@ -4,8 +4,9 @@
 
 using namespace std;
 
+
+
 int main(){
-    string temp=returnCurrentTime();
-    cout<<temp;
+    checkSlot(3,2);
     return 0;
 }

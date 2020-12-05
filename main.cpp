@@ -16,6 +16,7 @@ int main(){
     getRow("1.","Donate");
     getRow("2.","Report");
     getRow("3.","Adopt");
+    getRow("4.","Book Show");
     cin>>option;
     if(option==1){
         Donate d(c);
@@ -25,5 +26,8 @@ int main(){
     }
     else if(option==3){
         Adoption a(c);
+    }
+    else if(option==4){
+        TicketCounter t(c);
     }
 }

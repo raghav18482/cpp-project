@@ -19,6 +19,7 @@ string hashString(string destination, int key)
 bool compareHashString(string destination, string comparator, int key)
 {
     if(returnOriginalString(comparator,key)!=destination){
+        cout<<returnOriginalString<<destination<<endl;
         return false;
     }
 
@@ -27,10 +28,12 @@ bool compareHashString(string destination, string comparator, int key)
 
 string returnOriginalString(string hashed, int key)
 {
-    string temp;
+    string temp="";
+    cout<<hashed<<endl;
     for (int i = 0; i < hashed.length(); i++)
     {
-        temp[i] = hashed[i] - key;
+        temp+=  hashed[i] - key;
+        cout<<temp<<endl;
     }
 
     return temp;
@@ -69,3 +72,20 @@ struct Visitor{
     }
 
 };
+
+int getHour(string t){
+    string temp;
+    int space=0;
+    for (int i = 0; i < t.length(); i++)
+    {
+        if(space==3){
+            temp+=t[i];
+            temp+=t[i+1];
+            break;
+        }
+        if(t[i]==' '){
+            space++;
+        }
+    }
+    return conversionOfStringToInt(temp);
+}
