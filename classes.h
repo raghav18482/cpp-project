@@ -46,6 +46,7 @@ public:
     //authentication choosing
     Customer(int option)
     {
+        checkDate();
         if (option == 1)
         {
             signUp();

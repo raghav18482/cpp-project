@@ -7,6 +7,6 @@ using namespace std;
 
 
 int main(){
-    cout<<getNumberOfBooking(1,"skrb")-2<<endl;
+    checkDate();
     return 0;
 }

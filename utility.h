@@ -3,6 +3,7 @@
 #include <sstream>
 #include <chrono>
 #include <ctime>
+#include<fstream>
 using namespace std;
 #pragma once
 string returnOriginalString(string,int);
@@ -92,4 +93,51 @@ int getHour(string t){
         }
     }
     return conversionOfStringToInt(temp);
+}
+
+int getDate(ifstream &in){
+    string temp;
+    in>>temp;
+    in>>temp;
+    in>>temp;
+    return conversionOfStringToInt(temp);
+}
+int getDate(string dt){
+    int temp=0;
+    string temp2="";
+    for (int i = 0; i < dt.length(); i++)
+    {
+        if(temp==2){
+            temp2+=dt[i];
+            temp2+=dt[i+1];
+            break;
+        }
+        if(dt[i]==' '){
+            temp++;
+        }
+    }
+    
+    return conversionOfStringToInt(temp2);
+}
+
+void checkDate(){
+    ifstream in("data/show/date.txt");
+    int fileDate=getDate(in);
+    in.close();
+    int realDate=getDate(returnCurrentTime());
+    if(fileDate!=realDate){
+        ofstream out("data/show/date.txt");
+        out<<returnCurrentTime();
+        out.close();
+        string url="data/show/";
+        for (int i = 0; i < 4; i++)
+        {
+            url+=to_string(i+1)+".txt";
+            out.open(url.c_str());
+            out<<50;
+            out.close();
+            url="data/show/";
+        }
+    }
+    return ;
 }
