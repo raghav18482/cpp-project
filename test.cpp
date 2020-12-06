@@ -7,6 +7,6 @@ using namespace std;
 
 
 int main(){
-    checkSlot(3,2);
+    cout<<getNumberOfBooking(1,"skrb")-2<<endl;
     return 0;
 }

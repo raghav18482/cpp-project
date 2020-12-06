@@ -71,6 +71,10 @@ struct Visitor{
         cin>>gender;
     }
 
+    void showDetails(){
+        cout<<name<<age<<gender<<endl;
+    }
+
 };
 
 int getHour(string t){

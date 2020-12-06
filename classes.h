@@ -573,8 +573,10 @@ class TicketCounter : public Customer
     int numberOfBooking;
     int slot;
     string timeOfBooking;
+    struct Visitor *visitor;
     void bookTickets();
     void retrieveTickets();
+    void displayTickets();
 
 public:
     TicketCounter(){};
@@ -591,6 +593,7 @@ public:
         this->createdOn = c.createdOn;
         foldername += "tickets";
         makeFolder(foldername);
+        cout<<"Welcome to our NGO's people fun with animals session"<<endl;
         choose();
     }
     void choose();
@@ -617,7 +620,6 @@ void TicketCounter::choose()
 
 
 void TicketCounter::bookTickets(){
-    cout<<"Welcome to our NGO's people fun with animals session"<<endl;
     cout<<"How Many Tickets Do you wanna book "<<endl;
     cin>>numberOfBooking;
     cout<<"Please select a slot :"<<endl;
@@ -629,7 +631,7 @@ void TicketCounter::bookTickets(){
     getRow("4. ","5:00am","7:00pm");
     cin>>slot;
     if(checkSlot(slot,numberOfBooking)){
-        struct Visitor *visitor=new Visitor[numberOfBooking];
+        visitor=new Visitor[numberOfBooking];
         for (int i = 0; i < numberOfBooking; i++)
         {
             visitor[i].getDetails(i);
@@ -637,7 +639,7 @@ void TicketCounter::bookTickets(){
         timeOfBooking=returnCurrentTime();
         ticketId=getShowId();
         ticketId++;
-        storeTicket(visitor,username,ticketId,timeOfBooking,numberOfBooking,foldername);
+        storeTicket(visitor,username,ticketId,timeOfBooking,numberOfBooking,foldername,slot);
         updateId(ticketId,"currentShowId");
         updateSlotBooking(slot,numberOfBooking);
     }
@@ -647,6 +649,47 @@ void TicketCounter::bookTickets(){
     }
 }
 void TicketCounter::retrieveTickets(){
-    cout<<"Welcome to our NGO's people fun with animals session"<<endl;
+    int t;
+    cout<<"Please enter the ticket Id"<<endl;
+    cin>>t;
+    if(!checkForPath(foldername+"/"+to_string(t)+".txt")){
+        cout<<"Wrong ticket id"<<endl;
+        choose();
+        return;
+    }
+    ticketId=t;
+    numberOfBooking=getNumberOfBooking(ticketId,username);
+    visitor=new Visitor[numberOfBooking];
+    visitor=getVisitors(ticketId,username,numberOfBooking,&slot,&timeOfBooking);
+    displayTickets();
+}
 
+void TicketCounter::displayTickets(){
+    string slotString[4]={"9:00am-11:00am",
+                        "12:00pm-2:00pm",
+                        "3:00am-5:00pm",
+                        "5:00am-7:00am",
+                            };
+    cout<<"Here is your Tickets"<<endl;
+    line(5);
+    getRow("Ticket Id",to_string(ticketId));
+    Sleep(2);
+    getRow("Number of ticket",to_string(numberOfBooking));
+    Sleep(2);
+    getRow("Booked By ",username);
+    Sleep(2);
+    getRow("Booked On ",timeOfBooking);
+    Sleep(2);
+    getRow("Slot ",slotString[slot-1]);
+    Sleep(2);
+    curveLine(5);
+    getRow("Name","Gender","Age",25,15,12);
+    for (int i = 0; i < numberOfBooking; i++)
+    {
+        getRow(visitor[i].name,visitor[i].gender,to_string(visitor[i].age),25,15,12);
+        Sleep(2);
+    }
+
+    curveLine(5);
+    
 }

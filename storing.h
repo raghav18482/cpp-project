@@ -256,18 +256,20 @@ bool checkSlot(int slot,int numberOfTickets){
 
 }
 
-void storeTicket(struct Visitor *visitor,string username,int ticketId,string timeOfBooking,int numberOfBooking,string foldername){
+void storeTicket(struct Visitor *visitor,string username,int ticketId,string timeOfBooking,int numberOfBooking,string foldername,int slot){
         string url=foldername+"/"+to_string(ticketId)+".txt";
         ofstream out(url.c_str());
         out<<ticketId<<endl;
         out<<username<<endl;
+        out<<numberOfBooking<<endl;
+        out<<slot<<endl;
         out<<timeOfBooking<<endl;
         out<<endl;
         for (int i = 0; i < numberOfBooking; i++)
         {
                 out<<visitor[i].name<<endl;
-                out<<visitor[i].age<<endl;
                 out<<visitor[i].gender<<endl;
+                out<<visitor[i].age<<endl;
                 out<<endl;
         }
 
@@ -284,6 +286,43 @@ void updateSlotBooking(int slot,int numberOfTickets){
         ofstream out(url.c_str());
         out<<to_string(conversionOfStringToInt(temp)-numberOfTickets);
         out.close();
+}
+
+
+int getNumberOfBooking(int ticketId,string username){
+        auto url="data/"+username+"/tickets/"+to_string(ticketId)+".txt";
+        ifstream in(url.c_str());
+        string temp;
+        getline(in,temp);
+        getline(in,temp);
+        getline(in,temp);
+        return conversionOfStringToInt(temp);
+}
+
+struct Visitor* getVisitors(int ticketId,string username,int numberOfBooking,int *slot,string *timeOfBooking){
+        auto url="data/"+username+"/tickets/"+to_string(ticketId)+".txt";
+        struct Visitor*v=new Visitor[numberOfBooking];
+        ifstream in(url.c_str());
+        string temp;
+        getline(in,temp);
+        getline(in,temp);
+        getline(in,temp);
+        getline(in,temp);
+        *slot=conversionOfStringToInt(temp);
+        getline(in,temp);
+        *timeOfBooking=temp;
+        getline(in,temp);
+        for (int i = 0; i < numberOfBooking; i++)
+        {
+                getline(in,v[i].name);
+                getline(in,v[i].gender);
+                getline(in,temp);
+                v[i].age=conversionOfStringToInt(temp);
+                getline(in,temp);
+        }
+
+        return v;
+        
 }
 
 
