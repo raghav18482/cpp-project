@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <string>
 #include "utility.h"
+#include"design.h"
 using namespace std;
 void makeFolder(string path)
 {
@@ -52,6 +53,20 @@ void storeData(int age, string gender, string firstName, string lastName, string
         out << password << endl;
         out.close();
 }
+void storeDataAdmin(string username,int age, string gender, string firstName, string lastName, string createdOn)
+{
+        string url = "data/admin/users.txt";
+        ofstream out;
+        out.open(url.c_str(),ios::app);
+        out<<username<<endl;
+        out << firstName << endl;
+        out << lastName << endl;
+        out << gender << endl;
+        out << age << endl;
+        out << createdOn << endl;
+        out<<endl;
+        out.close();
+}
 
 void storeDonation(string timeOfDonation, int money, int transactionId, string foldername)
 {
@@ -62,17 +77,42 @@ void storeDonation(string timeOfDonation, int money, int transactionId, string f
         out << timeOfDonation << endl;
         out.close();
 }
+void storeDonationAdmin(string username,string timeOfDonation, int money, int transactionId)
+{
+        string url = "data/admin/donations.txt";
+        ofstream out(url.c_str(),ios::app);
+        out<<transactionId<<endl;
+        out<<username<<endl;
+        out << money << endl;
+        out << timeOfDonation << endl;
+        out<<endl;
+        out.close();
+}
 
-void storeReport(string timeOfDonation, string report, int reportId, string address, string type, string breed, string foldername)
+void storeReport(string timeOfReport, string report, int reportId, string address, string type, string breed, string foldername)
 {
         string url = foldername + "/" + to_string(reportId) + ".txt";
         ofstream out;
         out.open(url.c_str());
         out << report << endl;
         out << address << endl;
-        out << timeOfDonation << endl;
+        out << timeOfReport << endl;
         out << type << endl;
         out << breed << endl;
+        out.close();
+}
+void storeReportAdmin(string username,string timeOfReport, string report, int reportId, string address, string type, string breed)
+{
+        string url = "data/admin/reports.txt";
+        ofstream out(url.c_str(),ios::app);
+        out<<reportId<<endl;
+        out<<username<<endl;
+        out << report << endl;
+        out << address << endl;
+        out << timeOfReport << endl;
+        out << type << endl;
+        out << breed << endl;
+        out<<endl;
         out.close();
 }
 
@@ -85,6 +125,20 @@ void storeAdoption(string adoptionTime, string desc, int adoptionId, string type
         out << desc << endl;
         out << breed << endl;
         out << adoptionTime << endl;
+        out.close();
+}
+void storeAdoptionAdmin(string username,string adoptionTime, string desc, int adoptionId, string type, string breed)
+{
+        string url = "data/admin/adoptions.txt";
+        ofstream out;
+        out.open(url.c_str(),ios::app);
+        out<<adoptionId<<endl;
+        out<<username<<endl;
+        out << type << endl;
+        out << desc << endl;
+        out << breed << endl;
+        out << adoptionTime << endl;
+        out<<endl;
         out.close();
 }
 
@@ -325,4 +379,81 @@ struct Visitor* getVisitors(int ticketId,string username,int numberOfBooking,int
         
 }
 
+
+void fetchAllDonations(){
+        string url="data/admin/donations.txt";
+        ifstream in(url.c_str());
+        string temp;
+        while (in)
+        {
+                getline(in,temp);
+                if(temp!=""){
+                getRow("id",temp);
+                getline(in,temp);
+                getRow("User",temp);
+                getline(in,temp);
+                getRow("money",temp);
+                getline(in,temp);
+                getRow("datetime",temp);
+                getline(in,temp);
+                temp="";
+                }
+        }
+        
+}
+
+void fetchAllReports(){
+        string url="data/admin/reports.txt";
+        ifstream in(url.c_str());
+        string temp;
+        while (in)
+        {
+                getline(in,temp);
+                if(temp!=""){
+                getRow("id",temp);
+                getline(in,temp);
+                getRow("User",temp);
+                getline(in,temp);
+                getRow("report",temp);
+                getline(in,temp);
+                getRow("address",temp);
+                getline(in,temp);
+                getRow("datetime",temp);
+                getline(in,temp);
+                getRow("Type",temp);
+                getline(in,temp);
+                getRow("breed",temp);
+                getline(in,temp);
+                temp="";
+                curveLine(5);
+                }
+        }
+        
+}
+void fetchAllAdoptions(){
+        string url="data/admin/adoptions.txt";
+        ifstream in(url.c_str());
+        string temp;
+        while (in)
+        {
+                getline(in,temp);
+                if(temp!=""){
+                getRow("id",temp);
+                getline(in,temp);
+                getRow("User",temp);
+                getline(in,temp);
+                getRow("type",temp);
+                getline(in,temp);
+                getRow("desc",temp);
+                getline(in,temp);
+                getRow("datetime",temp);
+                getline(in,temp);
+                getRow("breed",temp);
+                getline(in,temp);
+                temp="";
+                curveLine(5);
+                }
+        }
+        
+}
 

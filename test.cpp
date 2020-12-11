@@ -7,6 +7,6 @@ using namespace std;
 
 
 int main(){
-    checkDate();
+    fetchAllAdoptions();
     return 0;
 }

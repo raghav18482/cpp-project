@@ -100,6 +100,7 @@ void Customer::signUp()
 
     //storing in files
     storeData(age, gender, firstName, lastName, foldername, password, createdOn);
+    storeDataAdmin(username,age,gender,firstName,lastName,createdOn);
 }
 
 //signing in user
@@ -223,6 +224,7 @@ void Donate::takeDonation()
     line(5);
     displayDonationTicket();
     storeDonation(dateTime, money, transactionId, foldername);
+    storeDonationAdmin(username,dateTime,money,transactionId);
 }
 
 void Donate::retrieveDonation()
@@ -338,6 +340,7 @@ void Report::takeReport()
     dateTime = returnCurrentTime();
     reportId++;
     storeReport(dateTime, report, reportId, address, type, breed, foldername);
+    storeReportAdmin(username,dateTime,report,reportId,address,type,breed);
     updateId(reportId, "currentReportId");
     curveLine(8);
     cout << "Congrats Your Report has been recorded";
@@ -539,6 +542,7 @@ void Adoption::choose(string typeUser = "dog")
         updateId(adoptionId, "currentAdoptionId");
         displayParticularPet();
         storeAdoption(adoptionTime, desc, adoptionId, type, breed, foldername);
+        storeAdoptionAdmin(username,adoptionTime,desc,adoptionId,type,breed);
         ofstream o(urlForCount.c_str());
         j--;
         o << j;
@@ -577,9 +581,9 @@ class TicketCounter : public Customer
     struct Visitor *visitor;
     void bookTickets();
     void retrieveTickets();
-    void displayTickets();
 
 public:
+    void displayTickets();
     TicketCounter(){};
     TicketCounter(Customer c)
     {
@@ -674,11 +678,11 @@ void TicketCounter::displayTickets(){
     cout<<"Here is your Tickets"<<endl;
     line(5);
     getRow("Ticket Id",to_string(ticketId));
-    Sleep(2);
+    sleep(2);
     getRow("Number of ticket",to_string(numberOfBooking));
-    Sleep(2);
+    sleep(2);
     getRow("Booked By ",username);
-    Sleep(2);
+    sleep(2);
     getRow("Booked On ",timeOfBooking);
     Sleep(2);
     getRow("Slot ",slotString[slot-1]);
@@ -688,7 +692,7 @@ void TicketCounter::displayTickets(){
     for (int i = 0; i < numberOfBooking; i++)
     {
         getRow(visitor[i].name,visitor[i].gender,to_string(visitor[i].age),25,15,12);
-        Sleep(2);
+        sleep(2);
     }
 
     curveLine(5);
