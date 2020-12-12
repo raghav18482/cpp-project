@@ -7,6 +7,8 @@ class Admin{
     string password;
     void login();
     void options();
+    void displayPersonByName(string name);
+    void displayDonationsByUser(string username);
     public:
     Admin(){
         cout<<"You have reached admin panel please enter the username and password "<<endl;
@@ -44,9 +46,11 @@ void Admin::options(){
     getRow("1.","All donations");
     getRow("2.","All Reports");
     getRow("3.","All Pets");
-    getRow("4.","All Adoptions");
+    getRow("4.","Search person");
     getRow("5.","All Shows tickets for Today");
+    getRow("6.","Donations by username");
     cin>>option;
+    string temp;
     switch (option)
     {
     case 1:
@@ -59,13 +63,77 @@ void Admin::options(){
         fetchAllAdoptions();
         break;
     case 4:
-        fetchAllAdoptions();
+        cout<<"Enter the name u wanna search";
+        cin>>temp;
+        displayPersonByName(temp);
         break;
     case 5:
         fetchAllDonations();
         break;
+    case 6:
+        cout<<"Enter the username u wanna search";
+        cin>>temp;
+        displayDonationsByUser(temp);
     
     default:
         break;
     }
 }
+
+
+void Admin::displayPersonByName(string name){
+    string tempUser;
+    string temp;
+    string url="data/admin/users.txt";
+    ifstream in(url.c_str());
+    while (in)
+    {
+        getline(in,tempUser);
+        getline(in,temp);
+        if(temp==name){
+            Customer *c=new Customer(tempUser); 
+            return;
+        }
+        getline(in,temp);
+        getline(in,temp);
+        getline(in,temp);
+        getline(in,temp);
+        getline(in,temp);
+        temp="";
+    }
+    in.close();
+
+    cout<<"sorry not found"<<endl;
+    
+}
+
+
+void Admin::displayDonationsByUser(string username){
+    string tempId;
+    string temp;
+    string url="data/admin/donations.txt";
+    ifstream in(url.c_str());
+    while (in)
+    {
+        getline(in,tempId);
+        getline(in,temp);
+        if(temp==username){
+            Customer *c=new Customer(username,0);
+            Donate *d=new Donate(*c,1,tempId);
+            delete c;
+            delete d;
+        }
+        getline(in,temp);
+        getline(in,temp);
+        getline(in,temp);
+        temp="";
+    }
+
+    in.close();
+    
+}
+
+
+
+
+

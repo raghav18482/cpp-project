@@ -44,6 +44,14 @@ public:
     friend class TicketCounter;
     Customer() {}
     //authentication choosing
+    Customer(string username,int show=1){
+        foldername="data/"+username+"/";
+        this->username=username;
+        getData();
+        if(show==1){
+            displayDetails();
+        }
+    }
     Customer(int option)
     {
         checkDate();
@@ -146,8 +154,12 @@ void Customer::signin()
 //fetching data from file into object
 void Customer::getData()
 {
+
     string url = foldername + "personal.txt";
     ifstream in;
+    if(!in){
+        cout<<"Cant open file"<<endl;
+    }
     string temp;
     in.open(url.c_str());
     getline(in, firstName);
@@ -180,7 +192,7 @@ protected:
 
 public:
     Donate() {}
-    Donate(Customer &c)
+    Donate(Customer &c,int admin=0,string tid="null")
     {
         this->firstName = c.firstName;
         this->lastName = c.lastName;
@@ -192,12 +204,16 @@ public:
         this->password = c.password;
         this->createdOn = c.createdOn;
         foldername += "donation";
+        if(admin==1){
+            retrieveDonation(tid,0);
+            return;
+        }
         makeFolder(foldername);
         choose();
     }
     void takeDonation();
     void displayDonationTicket();
-    void retrieveDonation();
+    void retrieveDonation(string,int);
     void choose();
 };
 
@@ -227,8 +243,9 @@ void Donate::takeDonation()
     storeDonationAdmin(username,dateTime,money,transactionId);
 }
 
-void Donate::retrieveDonation()
+void Donate::retrieveDonation(string tid="null",int takeId=1)
 {
+    if(takeId==1){
     cout << "Please Enter the Transaction id : ";
     int t;
     cin >> t;
@@ -244,6 +261,11 @@ void Donate::retrieveDonation()
         cout << "Wrong Transaction id please enter again : ";
         cin >> t;
     }
+    }
+    else{
+        transactionId=conversionOfStringToInt(tid);
+        foldername+="/"+tid+".txt";
+    }
     string temp;
     ifstream in;
     in.open(foldername.c_str());
@@ -254,6 +276,7 @@ void Donate::retrieveDonation()
     line(5);
     curveLine(8);
     displayDonationTicket();
+    transactionId=getTransactionId();
 }
 
 void Donate::choose()
