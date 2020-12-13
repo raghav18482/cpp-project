@@ -148,8 +148,11 @@ void Admin::displayReportsByUser(string username){
             Customer *c=new Customer(username,0);
             Report *r=new Report(*c,1,tempId);
             delete c;
-            delete d;
+            delete r;
         }
+        getline(in,temp);
+        getline(in,temp);
+        getline(in,temp);
         getline(in,temp);
         getline(in,temp);
         getline(in,temp);
