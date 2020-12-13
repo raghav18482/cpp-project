@@ -44,11 +44,13 @@ public:
     friend class TicketCounter;
     Customer() {}
     //authentication choosing
-    Customer(string username,int show=1){
-        foldername="data/"+username+"/";
-        this->username=username;
+    Customer(string username, int show = 1)
+    {
+        foldername = "data/" + username + "/";
+        this->username = username;
         getData();
-        if(show==1){
+        if (show == 1)
+        {
             displayDetails();
         }
     }
@@ -108,7 +110,7 @@ void Customer::signUp()
 
     //storing in files
     storeData(age, gender, firstName, lastName, foldername, password, createdOn);
-    storeDataAdmin(username,age,gender,firstName,lastName,createdOn);
+    storeDataAdmin(username, age, gender, firstName, lastName, createdOn);
 }
 
 //signing in user
@@ -157,8 +159,9 @@ void Customer::getData()
 
     string url = foldername + "personal.txt";
     ifstream in;
-    if(!in){
-        cout<<"Cant open file"<<endl;
+    if (!in)
+    {
+        cout << "Cant open file" << endl;
     }
     string temp;
     in.open(url.c_str());
@@ -192,7 +195,7 @@ protected:
 
 public:
     Donate() {}
-    Donate(Customer &c,int admin=0,string tid="null")
+    Donate(Customer &c, int admin = 0, string tid = "null")
     {
         this->firstName = c.firstName;
         this->lastName = c.lastName;
@@ -204,8 +207,9 @@ public:
         this->password = c.password;
         this->createdOn = c.createdOn;
         foldername += "donation";
-        if(admin==1){
-            retrieveDonation(tid,0);
+        if (admin == 1)
+        {
+            retrieveDonation(tid, 0);
             return;
         }
         makeFolder(foldername);
@@ -213,7 +217,7 @@ public:
     }
     void takeDonation();
     void displayDonationTicket();
-    void retrieveDonation(string,int);
+    void retrieveDonation(string, int);
     void choose();
 };
 
@@ -240,31 +244,33 @@ void Donate::takeDonation()
     line(5);
     displayDonationTicket();
     storeDonation(dateTime, money, transactionId, foldername);
-    storeDonationAdmin(username,dateTime,money,transactionId);
+    storeDonationAdmin(username, dateTime, money, transactionId);
 }
 
-void Donate::retrieveDonation(string tid="null",int takeId=1)
+void Donate::retrieveDonation(string tid = "null", int takeId = 1)
 {
-    if(takeId==1){
-    cout << "Please Enter the Transaction id : ";
-    int t;
-    cin >> t;
-    while (true)
+    if (takeId == 1)
     {
-        if (checkForPath(foldername + "/" + to_string(t) + ".txt"))
-        {
-            transactionId = t;
-            foldername += "/" + to_string(transactionId) + ".txt";
-            break;
-        }
-
-        cout << "Wrong Transaction id please enter again : ";
+        cout << "Please Enter the Transaction id : ";
+        int t;
         cin >> t;
+        while (true)
+        {
+            if (checkForPath(foldername + "/" + to_string(t) + ".txt"))
+            {
+                transactionId = t;
+                foldername += "/" + to_string(transactionId) + ".txt";
+                break;
+            }
+
+            cout << "Wrong Transaction id please enter again : ";
+            cin >> t;
+        }
     }
-    }
-    else{
-        transactionId=conversionOfStringToInt(tid);
-        foldername+="/"+tid+".txt";
+    else
+    {
+        transactionId = conversionOfStringToInt(tid);
+        foldername += "/" + tid + ".txt";
     }
     string temp;
     ifstream in;
@@ -276,7 +282,7 @@ void Donate::retrieveDonation(string tid="null",int takeId=1)
     line(5);
     curveLine(8);
     displayDonationTicket();
-    transactionId=getTransactionId();
+    transactionId = getTransactionId();
 }
 
 void Donate::choose()
@@ -323,10 +329,14 @@ class Report : public Customer
     string dateTime;
     string type;
     string breed;
+    void takeReport();
+    void retrieveReport(string, int);
+    void displayReportTicket();
+    void choose();
 
 public:
     Report() {}
-    Report(Customer &c)
+    Report(Customer &c, int admin = 0, string tid = "null")
     {
         this->firstName = c.firstName;
         this->lastName = c.lastName;
@@ -338,13 +348,14 @@ public:
         this->password = c.password;
         this->createdOn = c.createdOn;
         foldername += "reports";
+        if (admin == 1)
+        {
+            retrieveReport(tid, 0);
+            return;
+        }
         makeFolder(foldername);
         choose();
     }
-    void takeReport();
-    void retrieveReport();
-    void displayReportTicket();
-    void choose();
 };
 
 int Report::reportId = getReportId();
@@ -363,7 +374,7 @@ void Report::takeReport()
     dateTime = returnCurrentTime();
     reportId++;
     storeReport(dateTime, report, reportId, address, type, breed, foldername);
-    storeReportAdmin(username,dateTime,report,reportId,address,type,breed);
+    storeReportAdmin(username, dateTime, report, reportId, address, type, breed);
     updateId(reportId, "currentReportId");
     curveLine(8);
     cout << "Congrats Your Report has been recorded";
@@ -372,22 +383,29 @@ void Report::takeReport()
     storePet(type, report, breed, dateTime, reportId);
 }
 
-void Report::retrieveReport()
+void Report::retrieveReport(string tid = "null", int takeId = 1)
 {
-    cout << "Please Enter the Report id : ";
-    int t;
-    cin >> t;
-    while (true)
+    if (takeId == 1)
     {
-        if (checkForPath(foldername + "/" + to_string(t) + ".txt"))
-        {
-            reportId = t;
-            foldername += "/" + to_string(reportId) + ".txt";
-            break;
-        }
-
-        cout << "Wrong Report id please enter again : ";
+        cout << "Please Enter the Report id : ";
+        int t;
         cin >> t;
+        while (true)
+        {
+            if (checkForPath(foldername + "/" + to_string(t) + ".txt"))
+            {
+                reportId = t;
+                foldername += "/" + to_string(reportId) + ".txt";
+                break;
+            }
+
+            cout << "Wrong Report id please enter again : ";
+            cin >> t;
+        }
+    }
+    else
+    {
+        foldername += "/" + tid + ".txt";
     }
     string temp;
     ifstream in;
@@ -401,6 +419,7 @@ void Report::retrieveReport()
     line(5);
     curveLine(8);
     displayReportTicket();
+    reportId=getReportId();
 }
 
 void Report::displayReportTicket()
@@ -565,7 +584,7 @@ void Adoption::choose(string typeUser = "dog")
         updateId(adoptionId, "currentAdoptionId");
         displayParticularPet();
         storeAdoption(adoptionTime, desc, adoptionId, type, breed, foldername);
-        storeAdoptionAdmin(username,adoptionTime,desc,adoptionId,type,breed);
+        storeAdoptionAdmin(username, adoptionTime, desc, adoptionId, type, breed);
         ofstream o(urlForCount.c_str());
         j--;
         o << j;
@@ -596,7 +615,7 @@ void Adoption::displayParticularPet()
 
 class TicketCounter : public Customer
 {
-    protected:
+protected:
     int ticketId;
     int numberOfBooking;
     int slot;
@@ -621,7 +640,7 @@ public:
         this->createdOn = c.createdOn;
         foldername += "tickets";
         makeFolder(foldername);
-        cout<<"Welcome to our NGO's people fun with animals session"<<endl;
+        cout << "Welcome to our NGO's people fun with animals session" << endl;
         choose();
     }
     void choose();
@@ -632,92 +651,100 @@ void TicketCounter::choose()
     int option;
     cout << "1. Book a Ticket " << endl
          << "2. See Your Ticket" << endl;
-    cin>>option;
+    cin >> option;
     if (option == 1)
     {
         bookTickets();
     }
-    else if (option==2){
+    else if (option == 2)
+    {
         retrieveTickets();
     }
-    else{
-        cout<<"Wrong Choice "<<endl<<"Enter again "<<endl;
+    else
+    {
+        cout << "Wrong Choice " << endl
+             << "Enter again " << endl;
         choose();
     }
 }
 
-
-void TicketCounter::bookTickets(){
-    cout<<"How Many Tickets Do you wanna book "<<endl;
-    cin>>numberOfBooking;
-    cout<<"Please select a slot :"<<endl;
+void TicketCounter::bookTickets()
+{
+    cout << "How Many Tickets Do you wanna book " << endl;
+    cin >> numberOfBooking;
+    cout << "Please select a slot :" << endl;
     line(5);
-    getRow("No. ","StartTime","EndTime");
-    getRow("1. ","9:00am","11:00am");
-    getRow("2. ","12:00pm","2:00pm");
-    getRow("3. ","3:00pm","5:00pm");
-    getRow("4. ","5:00am","7:00pm");
-    cin>>slot;
-    if(checkSlot(slot,numberOfBooking)){
-        visitor=new Visitor[numberOfBooking];
+    getRow("No. ", "StartTime", "EndTime");
+    getRow("1. ", "9:00am", "11:00am");
+    getRow("2. ", "12:00pm", "2:00pm");
+    getRow("3. ", "3:00pm", "5:00pm");
+    getRow("4. ", "5:00am", "7:00pm");
+    cin >> slot;
+    if (checkSlot(slot, numberOfBooking))
+    {
+        visitor = new Visitor[numberOfBooking];
         for (int i = 0; i < numberOfBooking; i++)
         {
             visitor[i].getDetails(i);
         }
-        timeOfBooking=returnCurrentTime();
-        ticketId=getShowId();
+        timeOfBooking = returnCurrentTime();
+        ticketId = getShowId();
         ticketId++;
-        storeTicket(visitor,username,ticketId,timeOfBooking,numberOfBooking,foldername,slot);
-        updateId(ticketId,"currentShowId");
-        updateSlotBooking(slot,numberOfBooking);
+        storeTicket(visitor, username, ticketId, timeOfBooking, numberOfBooking, foldername, slot);
+        updateId(ticketId, "currentShowId");
+        updateSlotBooking(slot, numberOfBooking);
     }
-    else{
-        cout<<"Sorry either slot is already done or full "<<endl;
+    else
+    {
+        cout << "Sorry either slot is already done or full " << endl;
         choose();
     }
 }
-void TicketCounter::retrieveTickets(){
+void TicketCounter::retrieveTickets()
+{
     int t;
-    cout<<"Please enter the ticket Id"<<endl;
-    cin>>t;
-    if(!checkForPath(foldername+"/"+to_string(t)+".txt")){
-        cout<<"Wrong ticket id"<<endl;
+    cout << "Please enter the ticket Id" << endl;
+    cin >> t;
+    if (!checkForPath(foldername + "/" + to_string(t) + ".txt"))
+    {
+        cout << "Wrong ticket id" << endl;
         choose();
         return;
     }
-    ticketId=t;
-    numberOfBooking=getNumberOfBooking(ticketId,username);
-    visitor=new Visitor[numberOfBooking];
-    visitor=getVisitors(ticketId,username,numberOfBooking,&slot,&timeOfBooking);
+    ticketId = t;
+    numberOfBooking = getNumberOfBooking(ticketId, username);
+    visitor = new Visitor[numberOfBooking];
+    visitor = getVisitors(ticketId, username, numberOfBooking, &slot, &timeOfBooking);
     displayTickets();
 }
 
-void TicketCounter::displayTickets(){
-    string slotString[4]={"9:00am-11:00am",
-                        "12:00pm-2:00pm",
-                        "3:00am-5:00pm",
-                        "5:00am-7:00am",
-                            };
-    cout<<"Here is your Tickets"<<endl;
+void TicketCounter::displayTickets()
+{
+    string slotString[4] = {
+        "9:00am-11:00am",
+        "12:00pm-2:00pm",
+        "3:00am-5:00pm",
+        "5:00am-7:00am",
+    };
+    cout << "Here is your Tickets" << endl;
     line(5);
-    getRow("Ticket Id",to_string(ticketId));
+    getRow("Ticket Id", to_string(ticketId));
     sleep(2);
-    getRow("Number of ticket",to_string(numberOfBooking));
+    getRow("Number of ticket", to_string(numberOfBooking));
     sleep(2);
-    getRow("Booked By ",username);
+    getRow("Booked By ", username);
     sleep(2);
-    getRow("Booked On ",timeOfBooking);
+    getRow("Booked On ", timeOfBooking);
     Sleep(2);
-    getRow("Slot ",slotString[slot-1]);
+    getRow("Slot ", slotString[slot - 1]);
     Sleep(2);
     curveLine(5);
-    getRow("Name","Gender","Age",25,15,12);
+    getRow("Name", "Gender", "Age", 25, 15, 12);
     for (int i = 0; i < numberOfBooking; i++)
     {
-        getRow(visitor[i].name,visitor[i].gender,to_string(visitor[i].age),25,15,12);
+        getRow(visitor[i].name, visitor[i].gender, to_string(visitor[i].age), 25, 15, 12);
         sleep(2);
     }
 
     curveLine(5);
-    
 }

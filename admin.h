@@ -9,6 +9,7 @@ class Admin{
     void options();
     void displayPersonByName(string name);
     void displayDonationsByUser(string username);
+    void displayReportsByUser(string username);
     public:
     Admin(){
         cout<<"You have reached admin panel please enter the username and password "<<endl;
@@ -131,6 +132,29 @@ void Admin::displayDonationsByUser(string username){
 
     in.close();
     
+}
+
+
+void Admin::displayReportsByUser(string username){
+    string tempId;
+    string temp;
+    string url="data/admin/reports.txt";
+    ifstream in(url.c_str());
+    while (in)
+    {
+        getline(in,tempId);
+        getline(in,temp);
+        if(temp==username){
+            Customer *c=new Customer(username,0);
+            Report *r=new Report(*c,1,tempId);
+            delete c;
+            delete d;
+        }
+        getline(in,temp);
+        getline(in,temp);
+        getline(in,temp);
+        temp="";
+    }
 }
 
 
