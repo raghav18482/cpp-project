@@ -622,11 +622,16 @@ protected:
     string timeOfBooking;
     struct Visitor *visitor;
     void bookTickets();
-    void retrieveTickets();
+    void retrieveTickets(int);
 
 public:
     void displayTickets();
     TicketCounter(){};
+    TicketCounter(int ticketId,string username){
+        this->username=username;
+        this->ticketId=ticketId;
+        retrieveTickets(1);
+    }
     TicketCounter(Customer c)
     {
         this->firstName = c.firstName;
@@ -658,7 +663,7 @@ void TicketCounter::choose()
     }
     else if (option == 2)
     {
-        retrieveTickets();
+        retrieveTickets(0);
     }
     else
     {
@@ -691,8 +696,10 @@ void TicketCounter::bookTickets()
         ticketId = getShowId();
         ticketId++;
         storeTicket(visitor, username, ticketId, timeOfBooking, numberOfBooking, foldername, slot);
+        storeTicketAdmin(username,ticketId,timeOfBooking);
         updateId(ticketId, "currentShowId");
         updateSlotBooking(slot, numberOfBooking);
+        displayTickets();
     }
     else
     {
@@ -700,8 +707,9 @@ void TicketCounter::bookTickets()
         choose();
     }
 }
-void TicketCounter::retrieveTickets()
+void TicketCounter::retrieveTickets(int admin=0)
 {
+    if(admin==0){
     int t;
     cout << "Please enter the ticket Id" << endl;
     cin >> t;
@@ -712,6 +720,7 @@ void TicketCounter::retrieveTickets()
         return;
     }
     ticketId = t;
+    }
     numberOfBooking = getNumberOfBooking(ticketId, username);
     visitor = new Visitor[numberOfBooking];
     visitor = getVisitors(ticketId, username, numberOfBooking, &slot, &timeOfBooking);

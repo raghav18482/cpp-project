@@ -102,6 +102,8 @@ int getDate(ifstream &in){
     in>>temp;
     return conversionOfStringToInt(temp);
 }
+
+
 int getDate(string dt){
     int temp=0;
     string temp2="";
@@ -140,4 +142,18 @@ void checkDate(){
         }
     }
     return ;
+}
+
+
+string getDateMonthyear(){
+    string date=returnCurrentTime();
+    string temp="";
+    for (int i = 0; i < date.length(); i++)
+    {
+        if(i<=10 || i>=20){
+            temp+=date[i];
+        }
+    }
+    return temp;
+    
 }

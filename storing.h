@@ -330,6 +330,15 @@ void storeTicket(struct Visitor *visitor,string username,int ticketId,string tim
         out.close();
 }
 
+void storeTicketAdmin(string username,int ticketId,string timeOfBooking){
+        string date=getDateMonthyear();
+        string url="data/admin/tickets/"+date+".txt";
+        ofstream out(url.c_str(),ios::app);
+        out<<username<<endl;
+        out<<ticketId<<endl;
+        out.close();
+}
+
 
 void updateSlotBooking(int slot,int numberOfTickets){
         auto url="data/show/"+to_string(slot)+".txt";

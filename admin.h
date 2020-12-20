@@ -10,6 +10,8 @@ class Admin{
     void displayPersonByName(string name);
     void displayDonationsByUser(string username);
     void displayReportsByUser(string username);
+    void displayPets(string type);
+    void displayAllTicketsOfToday();
     public:
     Admin(){
         cout<<"You have reached admin panel please enter the username and password "<<endl;
@@ -46,10 +48,11 @@ void Admin::options(){
     curveLine(5);
     getRow("1.","All donations");
     getRow("2.","All Reports");
-    getRow("3.","All Pets");
+    getRow("3.","All Adoptions");
     getRow("4.","Search person");
     getRow("5.","All Shows tickets for Today");
     getRow("6.","Donations by username");
+    getRow("7.","Pets");
     cin>>option;
     string temp;
     switch (option)
@@ -69,12 +72,16 @@ void Admin::options(){
         displayPersonByName(temp);
         break;
     case 5:
-        fetchAllDonations();
+        displayAllTicketsOfToday();
         break;
     case 6:
         cout<<"Enter the username u wanna search";
         cin>>temp;
         displayDonationsByUser(temp);
+    case 7:
+        cout<<"Enter the type of u wanna search";
+        cin>>temp;
+        displayPets(temp);
     
     default:
         break;
@@ -159,6 +166,44 @@ void Admin::displayReportsByUser(string username){
         temp="";
     }
 }
+
+
+void Admin::displayPets(string type){
+    string url="data/pets/"+type+".txt";
+    ifstream in(url.c_str());
+    string temp;
+    while (in)
+    {
+        getline(in,temp);
+        cout<<temp<<endl;
+        temp="";
+    }
+    
+}
+
+void Admin::displayAllTicketsOfToday(){
+    string date=returnCurrentTime();
+    string tempUsername,temp;
+    int tempId;
+    date=getDateMonthyear();
+    TicketCounter *t;
+    string url="data/admin/tickets/"+date+".txt";
+    ifstream in(url.c_str());
+    while(in){
+        getline(in,tempUsername);
+        getline(in,temp);
+        tempId=conversionOfStringToInt(temp);
+        if(tempUsername!=""){
+            t=new TicketCounter(tempId,tempUsername);
+        }
+        tempUsername="";
+        temp="";
+    }
+
+    in.close();
+
+}
+
 
 
 

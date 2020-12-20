@@ -7,6 +7,6 @@ using namespace std;
 
 
 int main(){
-    fetchAllAdoptions();
+    cout<<getDateMonthyear();
     return 0;
 }
