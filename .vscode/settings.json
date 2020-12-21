@@ -3,5 +3,6 @@
         "iosfwd": "cpp",
         "iostream": "cpp",
         "iomanip": "cpp"
-    }
+    },
+    "editor.mouseWheelZoom": true
 }

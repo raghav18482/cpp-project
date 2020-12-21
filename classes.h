@@ -314,7 +314,7 @@ void Donate::choose()
 void Donate::displayDonationTicket()
 {
     curveLine(8);
-    cout << "Here is your ticket please printout it :";
+    cout << "Here is your Donation Ticket please printout it :";
     line(5);
     getRow("Transaction Id", to_string(transactionId));
     getRow("Money Donated", to_string(money));
@@ -425,7 +425,7 @@ void Report::retrieveReport(string tid = "null", int takeId = 1)
 void Report::displayReportTicket()
 {
     curveLine(8);
-    cout << "Here is your ticket please printout it :";
+    cout << "Here is your Report please printout it :";
     line(5);
     getRow("Transaction Id", to_string(reportId));
     getRow("Your Report", report);

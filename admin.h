@@ -94,12 +94,18 @@ void Admin::displayPersonByName(string name){
     string temp;
     string url="data/admin/users.txt";
     ifstream in(url.c_str());
+    if(!in){
+        cout<<"sorry not found"<<endl;
+
+    }
     while (in)
     {
         getline(in,tempUser);
         getline(in,temp);
         if(temp==name){
             Customer *c=new Customer(tempUser); 
+            displayDonationsByUser(tempUser);
+            displayReportsByUser(tempUser);
             return;
         }
         getline(in,temp);
@@ -111,7 +117,7 @@ void Admin::displayPersonByName(string name){
     }
     in.close();
 
-    cout<<"sorry not found"<<endl;
+    
     
 }
 
