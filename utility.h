@@ -30,11 +30,11 @@ bool compareHashString(string destination, string comparator, int key)
 string returnOriginalString(string hashed, int key)
 {
     string temp="";
-    cout<<hashed<<endl;
+    
     for (int i = 0; i < hashed.length(); i++)
     {
         temp+=  hashed[i] - key;
-        cout<<temp<<endl;
+        
     }
 
     return temp;
@@ -157,3 +157,5 @@ string getDateMonthyear(){
     return temp;
     
 }
+
+

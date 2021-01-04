@@ -15,6 +15,66 @@ void makeFolder(string path)
         mkdir(path.c_str());
 }
 
+void makeRequirements(){
+    mkdir("data");
+    mkdir("data/admin");
+    mkdir("data/admin/tickets");
+    mkdir("data/pets");
+    mkdir("data/show");
+    ofstream out("data/currentAdoptionId.txt");
+    out<<0;
+    out.close();
+     out.open("data/currentReportId.txt");
+    out<<0;
+    out.close();
+
+     out.open("data/currentShowId.txt");
+    out<<0;
+    out.close();
+
+     out.open("data/currentTransactionId.txt");
+    out<<0;
+    out.close();
+
+     out.open("data/show/1.txt");
+    out<<50;
+    out.close();
+
+     out.open("data/show/2.txt");
+    out<<50;
+    out.close();
+
+     out.open("data/show/3.txt");
+    out<<50;
+    out.close();
+
+     out.open("data/show/3.txt");
+    out<<50;
+    out.close();
+
+     out.open("data/show/4.txt");
+    out<<50;
+    out.close();
+
+     out.open("data/show/date.txt");
+    out<<returnCurrentTime();
+    out.close();
+
+    out.open("data/admin/adoptions.txt");
+    out.close();
+
+    out.open("data/admin/reports.txt");
+    out.close();
+
+    out.open("data/admin/donations.txt");
+    out.close();
+
+    out.open("data/admin/users.txt");
+    out.close();
+    
+}
+
+
 bool checkUsername(string username)
 {
         string temp = "data/" + username + "/" + "personal.txt";
