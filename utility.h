@@ -6,6 +6,7 @@
 #include<fstream>
 using namespace std;
 #pragma once
+
 string returnOriginalString(string,int);
 string hashString(string destination, int key)
 {

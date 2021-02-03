@@ -340,7 +340,6 @@ void deleteItem(string id, string path)
         rename(p2.c_str(), path.c_str());
 }
 
-
 bool checkSlot(int slot,int numberOfTickets){
         int arr[4]={9,12,15,17};
         string temp=returnCurrentTime();
@@ -398,7 +397,6 @@ void storeTicketAdmin(string username,int ticketId,string timeOfBooking){
         out<<ticketId<<endl;
         out.close();
 }
-
 
 void updateSlotBooking(int slot,int numberOfTickets){
         auto url="data/show/"+to_string(slot)+".txt";
